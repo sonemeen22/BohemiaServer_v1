@@ -1,0 +1,133 @@
+# 编译输出
+build/
+out/
+bin/
+obj/
+*.exe
+*.out
+*.app
+
+# 依赖库
+lib/
+libs/
+*.lib
+*.a
+*.so
+*.dylib
+*.dll
+
+# 中间文件
+*.o
+*.obj
+*.gcno
+*.gcda
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+CMakeUserPresets.json
+build-*/
+compile_commands.json
+
+# IDE
+.vs/
+.idea/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.ncb
+*.sdf
+
+# 日志文件
+logs/
+*.log
+log/
+
+# 配置文件（敏感信息）
+config.ini
+*.config
+*.json
+*.yaml
+*.yml
+.env
+.env.local
+.env.*.local
+
+# 数据库
+*.db
+*.sqlite
+*.sqlite3
+
+# 临时文件
+*.tmp
+*.temp
+tmp/
+temp/
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 包管理器
+conaninfo.txt
+conanbuildinfo.cmake
+conan.lock
+conanbuild/
+conan/
+vcpkg_installed/
+
+# 测试覆盖率
+coverage/
+*.gcov
+
+# 预编译头文件
+*.pch
+
+# 打包文件
+*.tar.gz
+*.zip
+*.7z
+
+# 进程文件
+*.pid
+
+# 性能分析
+*.prof
+*.profdata
+
+# 特定于游戏服务器的忽略项
+# ---------------------------
+# 客户端资源（如果混在服务器仓库中）
+assets/
+resources/
+
+# 地图/场景数据（生成的文件）
+maps/*.bin
+maps/*.cache
+
+# 回放文件
+replays/
+
+# 崩溃dump
+core
+core.*
+*.dmp
+
+# 用户数据（不应版本控制）
+userdata/
+players/
+
+# 证书文件
+*.pem
+*.key
+*.crt
+
+# 网络抓包文件
+*.pcap
+
+
