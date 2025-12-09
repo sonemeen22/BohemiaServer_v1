@@ -1,6 +1,13 @@
 #include "NavMeshLoader.h"
 #include "NavMeshCollisionSystem.h"
 #include <iostream>
+#include <ctime>
+#include <iostream>
+#include <string>
+#include <boost/asio.hpp>
+#include "proto/mmo.pb.h"
+
+using boost::asio::ip::tcp;
 
 struct Player
 {
@@ -38,6 +45,48 @@ public:
         pathFinder_ = std::make_shared<NavMeshPathFinder>(navMeshData);
 
         return true;
+    }
+
+    void Run()
+    {
+        try
+        {
+            boost::asio::io_context io_context;
+
+            tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 13));
+
+            for (;;)
+            {
+                tcp::socket socket(io_context);
+                acceptor.accept(socket);
+
+                std::array<char, 1024> buf;
+                boost::system::error_code error;
+
+                size_t len = socket.read_some(boost::asio::buffer(buf), error);
+
+                if (error == boost::asio::error::eof)
+                {
+                    break; // Connection closed cleanly by peer.
+                }
+                else if (error)
+                {
+                    throw boost::system::system_error(error); // Some other error.
+                }
+
+                std::cout.write(buf.data(), len);
+                std::string data(buf.data());
+                MoveRequest move_request;
+                move_request.ParseFromString(data);
+
+                boost::system::error_code ignored_error;
+                boost::asio::write(socket, boost::asio::buffer(data), ignored_error);
+            }
+        }
+        catch (std::exception& e)
+        {
+            std::cerr << e.what() << std::endl;
+        }
     }
 
     void ProcessPlayerMovement(Player& player, const MovementInput& input) {
