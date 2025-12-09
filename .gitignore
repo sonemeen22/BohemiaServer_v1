@@ -6,6 +6,8 @@ obj/
 *.exe
 *.out
 *.app
+BohemiaServer/
+x64/
 
 # 依赖库
 lib/
@@ -131,3 +133,7 @@ players/
 *.pcap
 
 
+*.ilk
+*.tlog
+*.pdb
+*.idb
