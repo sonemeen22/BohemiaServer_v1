@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+message MoveRequest {
+  uint32 player_id = 1;
+  float position_x = 2;
+  float position_y = 3;
+  float position_z = 4;
+  float rotation_y = 5;
+  float velocity_x = 6;
+  float velocity_y = 7;
+  float velocity_z = 8;
+  uint64 timestamp = 9;
+}
+
+message MoveBroadcast {
+  uint32 player_id = 1;
+  float position_x = 2;
+  float position_y = 3;
+  float position_z = 4;
+  float rotation_y = 5;
+  uint64 server_time = 6;
+  uint32 state = 7; // 移动状态
+}

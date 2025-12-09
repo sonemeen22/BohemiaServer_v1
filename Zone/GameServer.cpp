@@ -30,6 +30,7 @@ private:
     NavMeshLoader navMeshLoader_;
     std::shared_ptr<NavMeshCollisionSystem> collisionSystem_;
     std::shared_ptr<NavMeshPathFinder> pathFinder_;
+    const int port_ = 1008;
 
 public:
     bool Initialize() {
@@ -53,7 +54,7 @@ public:
         {
             boost::asio::io_context io_context;
 
-            tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 13));
+            tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port_));
 
             for (;;)
             {
@@ -63,7 +64,12 @@ public:
                 std::array<char, 1024> buf;
                 boost::system::error_code error;
 
-                size_t len = socket.read_some(boost::asio::buffer(buf), error);
+                MoveRequest move_request;
+
+                std::vector<char> buffer;
+                char temp_buffer[1024];
+
+                size_t len = socket.receive(boost::asio::buffer(buf), 0, error);
 
                 if (error == boost::asio::error::eof)
                 {
@@ -74,13 +80,34 @@ public:
                     throw boost::system::system_error(error); // Some other error.
                 }
 
-                std::cout.write(buf.data(), len);
+                //std::cout.write(buf.data(), len);
                 std::string data(buf.data());
-                MoveRequest move_request;
+                
                 move_request.ParseFromString(data);
+                std::cout << "MoveRequest player_id:" << move_request.player_id();
+                std::cout << ",position_x:" << move_request.position_x();
+                std::cout << ",position_y:" << move_request.position_y();
+                std::cout << ",position_z:" << move_request.position_z() << std::endl;
 
+                MoveBroadcast move_broadcast;
+                move_broadcast.set_player_id(move_request.player_id());
+                move_broadcast.set_position_x(move_request.position_x());
+                move_broadcast.set_position_y(move_request.position_y());
+                move_broadcast.set_position_z(move_request.position_z());
+
+                // 序列化 MoveBroadcast 为字符串
+                std::string serialized_data;
+                if (!move_broadcast.SerializeToString(&serialized_data))
+                {
+                    std::cerr << "Failed to serialize MoveBroadcast" << std::endl;
+                    continue;
+                }
+
+                // 发送序列化后的数据
                 boost::system::error_code ignored_error;
-                boost::asio::write(socket, boost::asio::buffer(data), ignored_error);
+                boost::asio::write(socket,
+                    boost::asio::buffer(serialized_data.data(), serialized_data.size()),
+                    ignored_error);
             }
         }
         catch (std::exception& e)
