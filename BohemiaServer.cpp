@@ -6,10 +6,45 @@
 
 int main()
 {
-    GameServer game_server;
-    game_server.Initialize();
-    game_server.Run();
-    std::cout << "Hello World!\n";
+    //GameServer game_server;
+    //game_server.Initialize();
+    //game_server.Run();
+    try {
+        boost::asio::io_context io_context;
+        tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));
+
+        std::cout << "Server started on port 8080...\n";
+
+        tcp::socket socket(io_context);
+        acceptor.accept(socket);
+        std::cout << "Client connected.\n";
+
+        while (true) {
+            char data[1024];
+            boost::system::error_code ec;
+
+            size_t length = socket.read_some(boost::asio::buffer(data), ec);
+
+            if (ec == boost::asio::error::eof) {
+                std::cout << "Client disconnected.\n";
+                break;
+            }
+            else if (ec) {
+                std::cerr << "Receive error: " << ec.message() << std::endl;
+                break;
+            }
+
+            std::string msg(data, length);
+            std::cout << "Received: " << msg << "\n";
+
+            // 回显
+            std::string reply = "Echo: " + msg;
+            boost::asio::write(socket, boost::asio::buffer(reply), ec);
+        }
+    }
+    catch (std::exception& e) {
+        std::cerr << "Exception: " << e.what() << "\n";
+    }
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

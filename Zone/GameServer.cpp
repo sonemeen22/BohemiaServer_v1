@@ -199,6 +199,7 @@ public:
                 tcp::socket socket(io_context);
                 acceptor.accept(socket);
                 handle_client(std::move(socket));
+                io_context.run();
                 // 为每个客户端创建独立线程
                 //std::thread(handle_client, std::move(socket)).detach();
             }
