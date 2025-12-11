@@ -29,7 +29,10 @@ void handle_client(tcp::socket socket)
             std::cout << "Player:" << req.player_id()
                 << " Pos x:" << req.position_x()
                 << " Pos y:" << req.position_y()
-                << " Pos z:" << req.position_z() << std::endl;
+                << " Pos z:" << req.position_z()
+                << " vx:" << req.velocity_x()
+                << " vy:" << req.velocity_y()
+                << " vz:" << req.velocity_z() << std::endl;
 
             // 4. 构建响应
             MoveBroadcast broadcast;
