@@ -32,7 +32,10 @@ void handle_client(tcp::socket socket)
                 << " Pos z:" << req.position_z()
                 << " vx:" << req.velocity_x()
                 << " vy:" << req.velocity_y()
-                << " vz:" << req.velocity_z() << std::endl;
+                << " vz:" << req.velocity_z() 
+                << " horizontal:" << req.horizontal()
+                << " vertical:" << req.vertical()
+                << std::endl;
 
             // 4. 构建响应
             MoveBroadcast broadcast;
@@ -46,7 +49,6 @@ void handle_client(tcp::socket socket)
 
             // 5. 发送（带长度）
             uint32_t out_size = htonl(out.size());
-            std::cout << "out_size=" << out_size << std::endl;
             boost::asio::write(socket, boost::asio::buffer(&out_size, 4));
             boost::asio::write(socket, boost::asio::buffer(out));
         }

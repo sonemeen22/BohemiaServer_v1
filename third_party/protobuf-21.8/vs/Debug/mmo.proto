@@ -9,7 +9,9 @@ message MoveRequest {
   float velocity_x = 6;
   float velocity_y = 7;
   float velocity_z = 8;
-  uint64 timestamp = 9;
+  float horizontal = 9;
+  float vertical = 10;
+  uint64 timestamp = 11;
 }
 
 message MoveBroadcast {

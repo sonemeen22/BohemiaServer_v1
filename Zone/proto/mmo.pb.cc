@@ -30,6 +30,8 @@ PROTOBUF_CONSTEXPR MoveRequest::MoveRequest(
   , /*decltype(_impl_.velocity_x_)*/0
   , /*decltype(_impl_.velocity_y_)*/0
   , /*decltype(_impl_.velocity_z_)*/0
+  , /*decltype(_impl_.horizontal_)*/0
+  , /*decltype(_impl_.vertical_)*/0
   , /*decltype(_impl_.timestamp_)*/uint64_t{0u}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct MoveRequestDefaultTypeInternal {
@@ -79,6 +81,8 @@ const uint32_t TableStruct_mmo_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(prot
   PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.velocity_x_),
   PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.velocity_y_),
   PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.velocity_z_),
+  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.horizontal_),
+  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.vertical_),
   PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.timestamp_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _internal_metadata_),
@@ -96,7 +100,7 @@ const uint32_t TableStruct_mmo_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(prot
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::MoveRequest)},
-  { 15, -1, -1, sizeof(::MoveBroadcast)},
+  { 17, -1, -1, sizeof(::MoveBroadcast)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -105,20 +109,21 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_mmo_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\tmmo.proto\"\277\001\n\013MoveRequest\022\021\n\tplayer_id"
+  "\n\tmmo.proto\"\345\001\n\013MoveRequest\022\021\n\tplayer_id"
   "\030\001 \001(\r\022\022\n\nposition_x\030\002 \001(\002\022\022\n\nposition_y"
   "\030\003 \001(\002\022\022\n\nposition_z\030\004 \001(\002\022\022\n\nrotation_y"
   "\030\005 \001(\002\022\022\n\nvelocity_x\030\006 \001(\002\022\022\n\nvelocity_y"
-  "\030\007 \001(\002\022\022\n\nvelocity_z\030\010 \001(\002\022\021\n\ttimestamp\030"
-  "\t \001(\004\"\226\001\n\rMoveBroadcast\022\021\n\tplayer_id\030\001 \001"
-  "(\r\022\022\n\nposition_x\030\002 \001(\002\022\022\n\nposition_y\030\003 \001"
-  "(\002\022\022\n\nposition_z\030\004 \001(\002\022\022\n\nrotation_y\030\005 \001"
-  "(\002\022\023\n\013server_time\030\006 \001(\004\022\r\n\005state\030\007 \001(\rb\006"
-  "proto3"
+  "\030\007 \001(\002\022\022\n\nvelocity_z\030\010 \001(\002\022\022\n\nhorizontal"
+  "\030\t \001(\002\022\020\n\010vertical\030\n \001(\002\022\021\n\ttimestamp\030\013 "
+  "\001(\004\"\226\001\n\rMoveBroadcast\022\021\n\tplayer_id\030\001 \001(\r"
+  "\022\022\n\nposition_x\030\002 \001(\002\022\022\n\nposition_y\030\003 \001(\002"
+  "\022\022\n\nposition_z\030\004 \001(\002\022\022\n\nrotation_y\030\005 \001(\002"
+  "\022\023\n\013server_time\030\006 \001(\004\022\r\n\005state\030\007 \001(\rb\006pr"
+  "oto3"
   ;
 static ::_pbi::once_flag descriptor_table_mmo_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_mmo_2eproto = {
-    false, false, 366, descriptor_table_protodef_mmo_2eproto,
+    false, false, 404, descriptor_table_protodef_mmo_2eproto,
     "mmo.proto",
     &descriptor_table_mmo_2eproto_once, nullptr, 0, 2,
     schemas, file_default_instances, TableStruct_mmo_2eproto::offsets,
@@ -156,6 +161,8 @@ MoveRequest::MoveRequest(const MoveRequest& from)
     , decltype(_impl_.velocity_x_){}
     , decltype(_impl_.velocity_y_){}
     , decltype(_impl_.velocity_z_){}
+    , decltype(_impl_.horizontal_){}
+    , decltype(_impl_.vertical_){}
     , decltype(_impl_.timestamp_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
@@ -179,6 +186,8 @@ inline void MoveRequest::SharedCtor(
     , decltype(_impl_.velocity_x_){0}
     , decltype(_impl_.velocity_y_){0}
     , decltype(_impl_.velocity_z_){0}
+    , decltype(_impl_.horizontal_){0}
+    , decltype(_impl_.vertical_){0}
     , decltype(_impl_.timestamp_){uint64_t{0u}}
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -283,9 +292,25 @@ const char* MoveRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
         } else
           goto handle_unusual;
         continue;
-      // uint64 timestamp = 9;
+      // float horizontal = 9;
       case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 77)) {
+          _impl_.horizontal_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float vertical = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 85)) {
+          _impl_.vertical_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // uint64 timestamp = 11;
+      case 11:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
           _impl_.timestamp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
@@ -396,10 +421,30 @@ uint8_t* MoveRequest::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteFloatToArray(8, this->_internal_velocity_z(), target);
   }
 
-  // uint64 timestamp = 9;
+  // float horizontal = 9;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_horizontal = this->_internal_horizontal();
+  uint32_t raw_horizontal;
+  memcpy(&raw_horizontal, &tmp_horizontal, sizeof(tmp_horizontal));
+  if (raw_horizontal != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(9, this->_internal_horizontal(), target);
+  }
+
+  // float vertical = 10;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_vertical = this->_internal_vertical();
+  uint32_t raw_vertical;
+  memcpy(&raw_vertical, &tmp_vertical, sizeof(tmp_vertical));
+  if (raw_vertical != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(10, this->_internal_vertical(), target);
+  }
+
+  // uint64 timestamp = 11;
   if (this->_internal_timestamp() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(9, this->_internal_timestamp(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(11, this->_internal_timestamp(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -486,7 +531,25 @@ size_t MoveRequest::ByteSizeLong() const {
     total_size += 1 + 4;
   }
 
-  // uint64 timestamp = 9;
+  // float horizontal = 9;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_horizontal = this->_internal_horizontal();
+  uint32_t raw_horizontal;
+  memcpy(&raw_horizontal, &tmp_horizontal, sizeof(tmp_horizontal));
+  if (raw_horizontal != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float vertical = 10;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_vertical = this->_internal_vertical();
+  uint32_t raw_vertical;
+  memcpy(&raw_vertical, &tmp_vertical, sizeof(tmp_vertical));
+  if (raw_vertical != 0) {
+    total_size += 1 + 4;
+  }
+
+  // uint64 timestamp = 11;
   if (this->_internal_timestamp() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_timestamp());
   }
@@ -560,6 +623,20 @@ void MoveRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   memcpy(&raw_velocity_z, &tmp_velocity_z, sizeof(tmp_velocity_z));
   if (raw_velocity_z != 0) {
     _this->_internal_set_velocity_z(from._internal_velocity_z());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_horizontal = from._internal_horizontal();
+  uint32_t raw_horizontal;
+  memcpy(&raw_horizontal, &tmp_horizontal, sizeof(tmp_horizontal));
+  if (raw_horizontal != 0) {
+    _this->_internal_set_horizontal(from._internal_horizontal());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_vertical = from._internal_vertical();
+  uint32_t raw_vertical;
+  memcpy(&raw_vertical, &tmp_vertical, sizeof(tmp_vertical));
+  if (raw_vertical != 0) {
+    _this->_internal_set_vertical(from._internal_vertical());
   }
   if (from._internal_timestamp() != 0) {
     _this->_internal_set_timestamp(from._internal_timestamp());

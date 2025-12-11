@@ -186,7 +186,9 @@ class MoveRequest final :
     kVelocityXFieldNumber = 6,
     kVelocityYFieldNumber = 7,
     kVelocityZFieldNumber = 8,
-    kTimestampFieldNumber = 9,
+    kHorizontalFieldNumber = 9,
+    kVerticalFieldNumber = 10,
+    kTimestampFieldNumber = 11,
   };
   // uint32 player_id = 1;
   void clear_player_id();
@@ -260,7 +262,25 @@ class MoveRequest final :
   void _internal_set_velocity_z(float value);
   public:
 
-  // uint64 timestamp = 9;
+  // float horizontal = 9;
+  void clear_horizontal();
+  float horizontal() const;
+  void set_horizontal(float value);
+  private:
+  float _internal_horizontal() const;
+  void _internal_set_horizontal(float value);
+  public:
+
+  // float vertical = 10;
+  void clear_vertical();
+  float vertical() const;
+  void set_vertical(float value);
+  private:
+  float _internal_vertical() const;
+  void _internal_set_vertical(float value);
+  public:
+
+  // uint64 timestamp = 11;
   void clear_timestamp();
   uint64_t timestamp() const;
   void set_timestamp(uint64_t value);
@@ -285,6 +305,8 @@ class MoveRequest final :
     float velocity_x_;
     float velocity_y_;
     float velocity_z_;
+    float horizontal_;
+    float vertical_;
     uint64_t timestamp_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -676,7 +698,47 @@ inline void MoveRequest::set_velocity_z(float value) {
   // @@protoc_insertion_point(field_set:MoveRequest.velocity_z)
 }
 
-// uint64 timestamp = 9;
+// float horizontal = 9;
+inline void MoveRequest::clear_horizontal() {
+  _impl_.horizontal_ = 0;
+}
+inline float MoveRequest::_internal_horizontal() const {
+  return _impl_.horizontal_;
+}
+inline float MoveRequest::horizontal() const {
+  // @@protoc_insertion_point(field_get:MoveRequest.horizontal)
+  return _internal_horizontal();
+}
+inline void MoveRequest::_internal_set_horizontal(float value) {
+  
+  _impl_.horizontal_ = value;
+}
+inline void MoveRequest::set_horizontal(float value) {
+  _internal_set_horizontal(value);
+  // @@protoc_insertion_point(field_set:MoveRequest.horizontal)
+}
+
+// float vertical = 10;
+inline void MoveRequest::clear_vertical() {
+  _impl_.vertical_ = 0;
+}
+inline float MoveRequest::_internal_vertical() const {
+  return _impl_.vertical_;
+}
+inline float MoveRequest::vertical() const {
+  // @@protoc_insertion_point(field_get:MoveRequest.vertical)
+  return _internal_vertical();
+}
+inline void MoveRequest::_internal_set_vertical(float value) {
+  
+  _impl_.vertical_ = value;
+}
+inline void MoveRequest::set_vertical(float value) {
+  _internal_set_vertical(value);
+  // @@protoc_insertion_point(field_set:MoveRequest.vertical)
+}
+
+// uint64 timestamp = 11;
 inline void MoveRequest::clear_timestamp() {
   _impl_.timestamp_ = uint64_t{0u};
 }
