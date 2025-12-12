@@ -137,3 +137,4 @@ players/
 *.tlog
 *.pdb
 *.idb
+third_party/protobuf-21.8/vs/Debug/mmo1.txt

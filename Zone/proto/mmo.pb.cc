@@ -20,19 +20,57 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
+PROTOBUF_CONSTEXPR Vector2D::Vector2D(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.x_)*/0
+  , /*decltype(_impl_.y_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct Vector2DDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR Vector2DDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~Vector2DDefaultTypeInternal() {}
+  union {
+    Vector2D _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Vector2DDefaultTypeInternal _Vector2D_default_instance_;
+PROTOBUF_CONSTEXPR Vector3D::Vector3D(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.x_)*/0
+  , /*decltype(_impl_.y_)*/0
+  , /*decltype(_impl_.z_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct Vector3DDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR Vector3DDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~Vector3DDefaultTypeInternal() {}
+  union {
+    Vector3D _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 Vector3DDefaultTypeInternal _Vector3D_default_instance_;
+PROTOBUF_CONSTEXPR CameraClient::CameraClient(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.forward_)*/nullptr
+  , /*decltype(_impl_.right_)*/nullptr
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct CameraClientDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CameraClientDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CameraClientDefaultTypeInternal() {}
+  union {
+    CameraClient _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CameraClientDefaultTypeInternal _CameraClient_default_instance_;
 PROTOBUF_CONSTEXPR MoveRequest::MoveRequest(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.player_id_)*/0u
-  , /*decltype(_impl_.position_x_)*/0
-  , /*decltype(_impl_.position_y_)*/0
-  , /*decltype(_impl_.position_z_)*/0
-  , /*decltype(_impl_.rotation_y_)*/0
-  , /*decltype(_impl_.velocity_x_)*/0
-  , /*decltype(_impl_.velocity_y_)*/0
-  , /*decltype(_impl_.velocity_z_)*/0
-  , /*decltype(_impl_.horizontal_)*/0
-  , /*decltype(_impl_.vertical_)*/0
+    /*decltype(_impl_.position_)*/nullptr
+  , /*decltype(_impl_.velocity_)*/nullptr
+  , /*decltype(_impl_.mouse_move_)*/nullptr
+  , /*decltype(_impl_.camera_)*/nullptr
   , /*decltype(_impl_.timestamp_)*/uint64_t{0u}
+  , /*decltype(_impl_.player_id_)*/0u
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct MoveRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MoveRequestDefaultTypeInternal()
@@ -45,13 +83,10 @@ struct MoveRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MoveRequestDefaultTypeInternal _MoveRequest_default_instance_;
 PROTOBUF_CONSTEXPR MoveBroadcast::MoveBroadcast(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.player_id_)*/0u
-  , /*decltype(_impl_.position_x_)*/0
-  , /*decltype(_impl_.position_y_)*/0
-  , /*decltype(_impl_.position_z_)*/0
-  , /*decltype(_impl_.server_time_)*/uint64_t{0u}
-  , /*decltype(_impl_.rotation_y_)*/0
+    /*decltype(_impl_.position_)*/nullptr
+  , /*decltype(_impl_.player_id_)*/0u
   , /*decltype(_impl_.state_)*/0u
+  , /*decltype(_impl_.server_time_)*/uint64_t{0u}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct MoveBroadcastDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MoveBroadcastDefaultTypeInternal()
@@ -62,11 +97,36 @@ struct MoveBroadcastDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MoveBroadcastDefaultTypeInternal _MoveBroadcast_default_instance_;
-static ::_pb::Metadata file_level_metadata_mmo_2eproto[2];
+static ::_pb::Metadata file_level_metadata_mmo_2eproto[5];
 static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_mmo_2eproto = nullptr;
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_mmo_2eproto = nullptr;
 
 const uint32_t TableStruct_mmo_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Vector2D, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Vector2D, _impl_.x_),
+  PROTOBUF_FIELD_OFFSET(::Vector2D, _impl_.y_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::Vector3D, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::Vector3D, _impl_.x_),
+  PROTOBUF_FIELD_OFFSET(::Vector3D, _impl_.y_),
+  PROTOBUF_FIELD_OFFSET(::Vector3D, _impl_.z_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::CameraClient, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::CameraClient, _impl_.forward_),
+  PROTOBUF_FIELD_OFFSET(::CameraClient, _impl_.right_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::MoveRequest, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -74,15 +134,10 @@ const uint32_t TableStruct_mmo_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(prot
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.player_id_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.position_x_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.position_y_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.position_z_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.rotation_y_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.velocity_x_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.velocity_y_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.velocity_z_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.horizontal_),
-  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.vertical_),
+  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.position_),
+  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.velocity_),
+  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.mouse_move_),
+  PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.camera_),
   PROTOBUF_FIELD_OFFSET(::MoveRequest, _impl_.timestamp_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _internal_metadata_),
@@ -91,41 +146,45 @@ const uint32_t TableStruct_mmo_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(prot
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.player_id_),
-  PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.position_x_),
-  PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.position_y_),
-  PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.position_z_),
-  PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.rotation_y_),
+  PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.position_),
   PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.server_time_),
   PROTOBUF_FIELD_OFFSET(::MoveBroadcast, _impl_.state_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::MoveRequest)},
-  { 17, -1, -1, sizeof(::MoveBroadcast)},
+  { 0, -1, -1, sizeof(::Vector2D)},
+  { 8, -1, -1, sizeof(::Vector3D)},
+  { 17, -1, -1, sizeof(::CameraClient)},
+  { 25, -1, -1, sizeof(::MoveRequest)},
+  { 37, -1, -1, sizeof(::MoveBroadcast)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+  &::_Vector2D_default_instance_._instance,
+  &::_Vector3D_default_instance_._instance,
+  &::_CameraClient_default_instance_._instance,
   &::_MoveRequest_default_instance_._instance,
   &::_MoveBroadcast_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_mmo_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\tmmo.proto\"\345\001\n\013MoveRequest\022\021\n\tplayer_id"
-  "\030\001 \001(\r\022\022\n\nposition_x\030\002 \001(\002\022\022\n\nposition_y"
-  "\030\003 \001(\002\022\022\n\nposition_z\030\004 \001(\002\022\022\n\nrotation_y"
-  "\030\005 \001(\002\022\022\n\nvelocity_x\030\006 \001(\002\022\022\n\nvelocity_y"
-  "\030\007 \001(\002\022\022\n\nvelocity_z\030\010 \001(\002\022\022\n\nhorizontal"
-  "\030\t \001(\002\022\020\n\010vertical\030\n \001(\002\022\021\n\ttimestamp\030\013 "
-  "\001(\004\"\226\001\n\rMoveBroadcast\022\021\n\tplayer_id\030\001 \001(\r"
-  "\022\022\n\nposition_x\030\002 \001(\002\022\022\n\nposition_y\030\003 \001(\002"
-  "\022\022\n\nposition_z\030\004 \001(\002\022\022\n\nrotation_y\030\005 \001(\002"
-  "\022\023\n\013server_time\030\006 \001(\004\022\r\n\005state\030\007 \001(\rb\006pr"
-  "oto3"
+  "\n\tmmo.proto\" \n\010Vector2D\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030"
+  "\002 \001(\002\"+\n\010Vector3D\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022"
+  "\t\n\001z\030\003 \001(\002\"D\n\014CameraClient\022\032\n\007forward\030\001 "
+  "\001(\0132\t.Vector3D\022\030\n\005right\030\002 \001(\0132\t.Vector3D"
+  "\"\253\001\n\013MoveRequest\022\021\n\tplayer_id\030\001 \001(\r\022\033\n\010p"
+  "osition\030\002 \001(\0132\t.Vector3D\022\033\n\010velocity\030\003 \001"
+  "(\0132\t.Vector3D\022\035\n\nmouse_move\030\004 \001(\0132\t.Vect"
+  "or2D\022\035\n\006camera\030\005 \001(\0132\r.CameraClient\022\021\n\tt"
+  "imestamp\030\006 \001(\004\"c\n\rMoveBroadcast\022\021\n\tplaye"
+  "r_id\030\001 \001(\r\022\033\n\010position\030\002 \001(\0132\t.Vector3D\022"
+  "\023\n\013server_time\030\003 \001(\004\022\r\n\005state\030\004 \001(\rb\006pro"
+  "to3"
   ;
 static ::_pbi::once_flag descriptor_table_mmo_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_mmo_2eproto = {
-    false, false, 404, descriptor_table_protodef_mmo_2eproto,
+    false, false, 443, descriptor_table_protodef_mmo_2eproto,
     "mmo.proto",
-    &descriptor_table_mmo_2eproto_once, nullptr, 0, 2,
+    &descriptor_table_mmo_2eproto_once, nullptr, 0, 5,
     schemas, file_default_instances, TableStruct_mmo_2eproto::offsets,
     file_level_metadata_mmo_2eproto, file_level_enum_descriptors_mmo_2eproto,
     file_level_service_descriptors_mmo_2eproto,
@@ -139,10 +198,775 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_in
 
 // ===================================================================
 
-class MoveRequest::_Internal {
+class Vector2D::_Internal {
  public:
 };
 
+Vector2D::Vector2D(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:Vector2D)
+}
+Vector2D::Vector2D(const Vector2D& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Vector2D* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.x_){}
+    , decltype(_impl_.y_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&_impl_.x_, &from._impl_.x_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.y_) -
+    reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.y_));
+  // @@protoc_insertion_point(copy_constructor:Vector2D)
+}
+
+inline void Vector2D::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.x_){0}
+    , decltype(_impl_.y_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+Vector2D::~Vector2D() {
+  // @@protoc_insertion_point(destructor:Vector2D)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void Vector2D::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void Vector2D::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void Vector2D::Clear() {
+// @@protoc_insertion_point(message_clear_start:Vector2D)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.x_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.y_) -
+      reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.y_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* Vector2D::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // float x = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
+          _impl_.x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float y = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
+          _impl_.y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* Vector2D::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Vector2D)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float x = 1;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this->_internal_x(), target);
+  }
+
+  // float y = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_y(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Vector2D)
+  return target;
+}
+
+size_t Vector2D::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Vector2D)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float x = 1;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float y = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    total_size += 1 + 4;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Vector2D::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    Vector2D::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Vector2D::GetClassData() const { return &_class_data_; }
+
+
+void Vector2D::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Vector2D*>(&to_msg);
+  auto& from = static_cast<const Vector2D&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Vector2D)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_x = from._internal_x();
+  uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    _this->_internal_set_x(from._internal_x());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_y = from._internal_y();
+  uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    _this->_internal_set_y(from._internal_y());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Vector2D::CopyFrom(const Vector2D& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Vector2D)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Vector2D::IsInitialized() const {
+  return true;
+}
+
+void Vector2D::InternalSwap(Vector2D* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Vector2D, _impl_.y_)
+      + sizeof(Vector2D::_impl_.y_)
+      - PROTOBUF_FIELD_OFFSET(Vector2D, _impl_.x_)>(
+          reinterpret_cast<char*>(&_impl_.x_),
+          reinterpret_cast<char*>(&other->_impl_.x_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata Vector2D::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_mmo_2eproto_getter, &descriptor_table_mmo_2eproto_once,
+      file_level_metadata_mmo_2eproto[0]);
+}
+
+// ===================================================================
+
+class Vector3D::_Internal {
+ public:
+};
+
+Vector3D::Vector3D(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:Vector3D)
+}
+Vector3D::Vector3D(const Vector3D& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Vector3D* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.x_){}
+    , decltype(_impl_.y_){}
+    , decltype(_impl_.z_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&_impl_.x_, &from._impl_.x_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.z_) -
+    reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.z_));
+  // @@protoc_insertion_point(copy_constructor:Vector3D)
+}
+
+inline void Vector3D::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.x_){0}
+    , decltype(_impl_.y_){0}
+    , decltype(_impl_.z_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+Vector3D::~Vector3D() {
+  // @@protoc_insertion_point(destructor:Vector3D)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void Vector3D::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void Vector3D::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void Vector3D::Clear() {
+// @@protoc_insertion_point(message_clear_start:Vector3D)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.x_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.z_) -
+      reinterpret_cast<char*>(&_impl_.x_)) + sizeof(_impl_.z_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* Vector3D::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // float x = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 13)) {
+          _impl_.x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float y = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
+          _impl_.y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      // float z = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
+          _impl_.z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
+          ptr += sizeof(float);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* Vector3D::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:Vector3D)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float x = 1;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this->_internal_x(), target);
+  }
+
+  // float y = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_y(), target);
+  }
+
+  // float z = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_z = this->_internal_z();
+  uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_z(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:Vector3D)
+  return target;
+}
+
+size_t Vector3D::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Vector3D)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float x = 1;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float y = 2;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float z = 3;
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_z = this->_internal_z();
+  uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
+    total_size += 1 + 4;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Vector3D::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    Vector3D::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Vector3D::GetClassData() const { return &_class_data_; }
+
+
+void Vector3D::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Vector3D*>(&to_msg);
+  auto& from = static_cast<const Vector3D&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Vector3D)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_x = from._internal_x();
+  uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    _this->_internal_set_x(from._internal_x());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_y = from._internal_y();
+  uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    _this->_internal_set_y(from._internal_y());
+  }
+  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
+  float tmp_z = from._internal_z();
+  uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
+    _this->_internal_set_z(from._internal_z());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Vector3D::CopyFrom(const Vector3D& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Vector3D)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Vector3D::IsInitialized() const {
+  return true;
+}
+
+void Vector3D::InternalSwap(Vector3D* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Vector3D, _impl_.z_)
+      + sizeof(Vector3D::_impl_.z_)
+      - PROTOBUF_FIELD_OFFSET(Vector3D, _impl_.x_)>(
+          reinterpret_cast<char*>(&_impl_.x_),
+          reinterpret_cast<char*>(&other->_impl_.x_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata Vector3D::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_mmo_2eproto_getter, &descriptor_table_mmo_2eproto_once,
+      file_level_metadata_mmo_2eproto[1]);
+}
+
+// ===================================================================
+
+class CameraClient::_Internal {
+ public:
+  static const ::Vector3D& forward(const CameraClient* msg);
+  static const ::Vector3D& right(const CameraClient* msg);
+};
+
+const ::Vector3D&
+CameraClient::_Internal::forward(const CameraClient* msg) {
+  return *msg->_impl_.forward_;
+}
+const ::Vector3D&
+CameraClient::_Internal::right(const CameraClient* msg) {
+  return *msg->_impl_.right_;
+}
+CameraClient::CameraClient(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:CameraClient)
+}
+CameraClient::CameraClient(const CameraClient& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  CameraClient* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.forward_){nullptr}
+    , decltype(_impl_.right_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_forward()) {
+    _this->_impl_.forward_ = new ::Vector3D(*from._impl_.forward_);
+  }
+  if (from._internal_has_right()) {
+    _this->_impl_.right_ = new ::Vector3D(*from._impl_.right_);
+  }
+  // @@protoc_insertion_point(copy_constructor:CameraClient)
+}
+
+inline void CameraClient::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.forward_){nullptr}
+    , decltype(_impl_.right_){nullptr}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+CameraClient::~CameraClient() {
+  // @@protoc_insertion_point(destructor:CameraClient)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void CameraClient::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.forward_;
+  if (this != internal_default_instance()) delete _impl_.right_;
+}
+
+void CameraClient::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void CameraClient::Clear() {
+// @@protoc_insertion_point(message_clear_start:CameraClient)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  if (GetArenaForAllocation() == nullptr && _impl_.forward_ != nullptr) {
+    delete _impl_.forward_;
+  }
+  _impl_.forward_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.right_ != nullptr) {
+    delete _impl_.right_;
+  }
+  _impl_.right_ = nullptr;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* CameraClient::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .Vector3D forward = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_forward(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .Vector3D right = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_right(), ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* CameraClient::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:CameraClient)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .Vector3D forward = 1;
+  if (this->_internal_has_forward()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::forward(this),
+        _Internal::forward(this).GetCachedSize(), target, stream);
+  }
+
+  // .Vector3D right = 2;
+  if (this->_internal_has_right()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::right(this),
+        _Internal::right(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CameraClient)
+  return target;
+}
+
+size_t CameraClient::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CameraClient)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .Vector3D forward = 1;
+  if (this->_internal_has_forward()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.forward_);
+  }
+
+  // .Vector3D right = 2;
+  if (this->_internal_has_right()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.right_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData CameraClient::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    CameraClient::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*CameraClient::GetClassData() const { return &_class_data_; }
+
+
+void CameraClient::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<CameraClient*>(&to_msg);
+  auto& from = static_cast<const CameraClient&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:CameraClient)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_has_forward()) {
+    _this->_internal_mutable_forward()->::Vector3D::MergeFrom(
+        from._internal_forward());
+  }
+  if (from._internal_has_right()) {
+    _this->_internal_mutable_right()->::Vector3D::MergeFrom(
+        from._internal_right());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void CameraClient::CopyFrom(const CameraClient& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CameraClient)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CameraClient::IsInitialized() const {
+  return true;
+}
+
+void CameraClient::InternalSwap(CameraClient* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(CameraClient, _impl_.right_)
+      + sizeof(CameraClient::_impl_.right_)
+      - PROTOBUF_FIELD_OFFSET(CameraClient, _impl_.forward_)>(
+          reinterpret_cast<char*>(&_impl_.forward_),
+          reinterpret_cast<char*>(&other->_impl_.forward_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata CameraClient::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_mmo_2eproto_getter, &descriptor_table_mmo_2eproto_once,
+      file_level_metadata_mmo_2eproto[2]);
+}
+
+// ===================================================================
+
+class MoveRequest::_Internal {
+ public:
+  static const ::Vector3D& position(const MoveRequest* msg);
+  static const ::Vector3D& velocity(const MoveRequest* msg);
+  static const ::Vector2D& mouse_move(const MoveRequest* msg);
+  static const ::CameraClient& camera(const MoveRequest* msg);
+};
+
+const ::Vector3D&
+MoveRequest::_Internal::position(const MoveRequest* msg) {
+  return *msg->_impl_.position_;
+}
+const ::Vector3D&
+MoveRequest::_Internal::velocity(const MoveRequest* msg) {
+  return *msg->_impl_.velocity_;
+}
+const ::Vector2D&
+MoveRequest::_Internal::mouse_move(const MoveRequest* msg) {
+  return *msg->_impl_.mouse_move_;
+}
+const ::CameraClient&
+MoveRequest::_Internal::camera(const MoveRequest* msg) {
+  return *msg->_impl_.camera_;
+}
 MoveRequest::MoveRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
@@ -153,23 +977,30 @@ MoveRequest::MoveRequest(const MoveRequest& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   MoveRequest* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.player_id_){}
-    , decltype(_impl_.position_x_){}
-    , decltype(_impl_.position_y_){}
-    , decltype(_impl_.position_z_){}
-    , decltype(_impl_.rotation_y_){}
-    , decltype(_impl_.velocity_x_){}
-    , decltype(_impl_.velocity_y_){}
-    , decltype(_impl_.velocity_z_){}
-    , decltype(_impl_.horizontal_){}
-    , decltype(_impl_.vertical_){}
+      decltype(_impl_.position_){nullptr}
+    , decltype(_impl_.velocity_){nullptr}
+    , decltype(_impl_.mouse_move_){nullptr}
+    , decltype(_impl_.camera_){nullptr}
     , decltype(_impl_.timestamp_){}
+    , decltype(_impl_.player_id_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&_impl_.player_id_, &from._impl_.player_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.timestamp_) -
-    reinterpret_cast<char*>(&_impl_.player_id_)) + sizeof(_impl_.timestamp_));
+  if (from._internal_has_position()) {
+    _this->_impl_.position_ = new ::Vector3D(*from._impl_.position_);
+  }
+  if (from._internal_has_velocity()) {
+    _this->_impl_.velocity_ = new ::Vector3D(*from._impl_.velocity_);
+  }
+  if (from._internal_has_mouse_move()) {
+    _this->_impl_.mouse_move_ = new ::Vector2D(*from._impl_.mouse_move_);
+  }
+  if (from._internal_has_camera()) {
+    _this->_impl_.camera_ = new ::CameraClient(*from._impl_.camera_);
+  }
+  ::memcpy(&_impl_.timestamp_, &from._impl_.timestamp_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.player_id_) -
+    reinterpret_cast<char*>(&_impl_.timestamp_)) + sizeof(_impl_.player_id_));
   // @@protoc_insertion_point(copy_constructor:MoveRequest)
 }
 
@@ -178,17 +1009,12 @@ inline void MoveRequest::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.player_id_){0u}
-    , decltype(_impl_.position_x_){0}
-    , decltype(_impl_.position_y_){0}
-    , decltype(_impl_.position_z_){0}
-    , decltype(_impl_.rotation_y_){0}
-    , decltype(_impl_.velocity_x_){0}
-    , decltype(_impl_.velocity_y_){0}
-    , decltype(_impl_.velocity_z_){0}
-    , decltype(_impl_.horizontal_){0}
-    , decltype(_impl_.vertical_){0}
+      decltype(_impl_.position_){nullptr}
+    , decltype(_impl_.velocity_){nullptr}
+    , decltype(_impl_.mouse_move_){nullptr}
+    , decltype(_impl_.camera_){nullptr}
     , decltype(_impl_.timestamp_){uint64_t{0u}}
+    , decltype(_impl_.player_id_){0u}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -204,6 +1030,10 @@ MoveRequest::~MoveRequest() {
 
 inline void MoveRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.position_;
+  if (this != internal_default_instance()) delete _impl_.velocity_;
+  if (this != internal_default_instance()) delete _impl_.mouse_move_;
+  if (this != internal_default_instance()) delete _impl_.camera_;
 }
 
 void MoveRequest::SetCachedSize(int size) const {
@@ -216,9 +1046,25 @@ void MoveRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.player_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.timestamp_) -
-      reinterpret_cast<char*>(&_impl_.player_id_)) + sizeof(_impl_.timestamp_));
+  if (GetArenaForAllocation() == nullptr && _impl_.position_ != nullptr) {
+    delete _impl_.position_;
+  }
+  _impl_.position_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.velocity_ != nullptr) {
+    delete _impl_.velocity_;
+  }
+  _impl_.velocity_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.mouse_move_ != nullptr) {
+    delete _impl_.mouse_move_;
+  }
+  _impl_.mouse_move_ = nullptr;
+  if (GetArenaForAllocation() == nullptr && _impl_.camera_ != nullptr) {
+    delete _impl_.camera_;
+  }
+  _impl_.camera_ = nullptr;
+  ::memset(&_impl_.timestamp_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.player_id_) -
+      reinterpret_cast<char*>(&_impl_.timestamp_)) + sizeof(_impl_.player_id_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -236,81 +1082,41 @@ const char* MoveRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
         } else
           goto handle_unusual;
         continue;
-      // float position_x = 2;
+      // .Vector3D position = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          _impl_.position_x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // float position_y = 3;
+      // .Vector3D velocity = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
-          _impl_.position_y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_velocity(), ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // float position_z = 4;
+      // .Vector2D mouse_move = 4;
       case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
-          _impl_.position_z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_mouse_move(), ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // float rotation_y = 5;
+      // .CameraClient camera = 5;
       case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 45)) {
-          _impl_.rotation_y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+          ptr = ctx->ParseMessage(_internal_mutable_camera(), ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // float velocity_x = 6;
+      // uint64 timestamp = 6;
       case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 53)) {
-          _impl_.velocity_x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float velocity_y = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 61)) {
-          _impl_.velocity_y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float velocity_z = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 69)) {
-          _impl_.velocity_z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float horizontal = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 77)) {
-          _impl_.horizontal_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float vertical = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 85)) {
-          _impl_.vertical_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint64 timestamp = 11;
-      case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 88)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
           _impl_.timestamp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
@@ -351,100 +1157,38 @@ uint8_t* MoveRequest::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_player_id(), target);
   }
 
-  // float position_x = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_x = this->_internal_position_x();
-  uint32_t raw_position_x;
-  memcpy(&raw_position_x, &tmp_position_x, sizeof(tmp_position_x));
-  if (raw_position_x != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_position_x(), target);
+  // .Vector3D position = 2;
+  if (this->_internal_has_position()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::position(this),
+        _Internal::position(this).GetCachedSize(), target, stream);
   }
 
-  // float position_y = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_y = this->_internal_position_y();
-  uint32_t raw_position_y;
-  memcpy(&raw_position_y, &tmp_position_y, sizeof(tmp_position_y));
-  if (raw_position_y != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_position_y(), target);
+  // .Vector3D velocity = 3;
+  if (this->_internal_has_velocity()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(3, _Internal::velocity(this),
+        _Internal::velocity(this).GetCachedSize(), target, stream);
   }
 
-  // float position_z = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_z = this->_internal_position_z();
-  uint32_t raw_position_z;
-  memcpy(&raw_position_z, &tmp_position_z, sizeof(tmp_position_z));
-  if (raw_position_z != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(4, this->_internal_position_z(), target);
+  // .Vector2D mouse_move = 4;
+  if (this->_internal_has_mouse_move()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(4, _Internal::mouse_move(this),
+        _Internal::mouse_move(this).GetCachedSize(), target, stream);
   }
 
-  // float rotation_y = 5;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_rotation_y = this->_internal_rotation_y();
-  uint32_t raw_rotation_y;
-  memcpy(&raw_rotation_y, &tmp_rotation_y, sizeof(tmp_rotation_y));
-  if (raw_rotation_y != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(5, this->_internal_rotation_y(), target);
+  // .CameraClient camera = 5;
+  if (this->_internal_has_camera()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(5, _Internal::camera(this),
+        _Internal::camera(this).GetCachedSize(), target, stream);
   }
 
-  // float velocity_x = 6;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_x = this->_internal_velocity_x();
-  uint32_t raw_velocity_x;
-  memcpy(&raw_velocity_x, &tmp_velocity_x, sizeof(tmp_velocity_x));
-  if (raw_velocity_x != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(6, this->_internal_velocity_x(), target);
-  }
-
-  // float velocity_y = 7;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_y = this->_internal_velocity_y();
-  uint32_t raw_velocity_y;
-  memcpy(&raw_velocity_y, &tmp_velocity_y, sizeof(tmp_velocity_y));
-  if (raw_velocity_y != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(7, this->_internal_velocity_y(), target);
-  }
-
-  // float velocity_z = 8;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_z = this->_internal_velocity_z();
-  uint32_t raw_velocity_z;
-  memcpy(&raw_velocity_z, &tmp_velocity_z, sizeof(tmp_velocity_z));
-  if (raw_velocity_z != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(8, this->_internal_velocity_z(), target);
-  }
-
-  // float horizontal = 9;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_horizontal = this->_internal_horizontal();
-  uint32_t raw_horizontal;
-  memcpy(&raw_horizontal, &tmp_horizontal, sizeof(tmp_horizontal));
-  if (raw_horizontal != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(9, this->_internal_horizontal(), target);
-  }
-
-  // float vertical = 10;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_vertical = this->_internal_vertical();
-  uint32_t raw_vertical;
-  memcpy(&raw_vertical, &tmp_vertical, sizeof(tmp_vertical));
-  if (raw_vertical != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(10, this->_internal_vertical(), target);
-  }
-
-  // uint64 timestamp = 11;
+  // uint64 timestamp = 6;
   if (this->_internal_timestamp() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(11, this->_internal_timestamp(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_timestamp(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -463,95 +1207,42 @@ size_t MoveRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // .Vector3D position = 2;
+  if (this->_internal_has_position()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.position_);
+  }
+
+  // .Vector3D velocity = 3;
+  if (this->_internal_has_velocity()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.velocity_);
+  }
+
+  // .Vector2D mouse_move = 4;
+  if (this->_internal_has_mouse_move()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.mouse_move_);
+  }
+
+  // .CameraClient camera = 5;
+  if (this->_internal_has_camera()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.camera_);
+  }
+
+  // uint64 timestamp = 6;
+  if (this->_internal_timestamp() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_timestamp());
+  }
+
   // uint32 player_id = 1;
   if (this->_internal_player_id() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_player_id());
-  }
-
-  // float position_x = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_x = this->_internal_position_x();
-  uint32_t raw_position_x;
-  memcpy(&raw_position_x, &tmp_position_x, sizeof(tmp_position_x));
-  if (raw_position_x != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float position_y = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_y = this->_internal_position_y();
-  uint32_t raw_position_y;
-  memcpy(&raw_position_y, &tmp_position_y, sizeof(tmp_position_y));
-  if (raw_position_y != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float position_z = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_z = this->_internal_position_z();
-  uint32_t raw_position_z;
-  memcpy(&raw_position_z, &tmp_position_z, sizeof(tmp_position_z));
-  if (raw_position_z != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float rotation_y = 5;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_rotation_y = this->_internal_rotation_y();
-  uint32_t raw_rotation_y;
-  memcpy(&raw_rotation_y, &tmp_rotation_y, sizeof(tmp_rotation_y));
-  if (raw_rotation_y != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float velocity_x = 6;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_x = this->_internal_velocity_x();
-  uint32_t raw_velocity_x;
-  memcpy(&raw_velocity_x, &tmp_velocity_x, sizeof(tmp_velocity_x));
-  if (raw_velocity_x != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float velocity_y = 7;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_y = this->_internal_velocity_y();
-  uint32_t raw_velocity_y;
-  memcpy(&raw_velocity_y, &tmp_velocity_y, sizeof(tmp_velocity_y));
-  if (raw_velocity_y != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float velocity_z = 8;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_z = this->_internal_velocity_z();
-  uint32_t raw_velocity_z;
-  memcpy(&raw_velocity_z, &tmp_velocity_z, sizeof(tmp_velocity_z));
-  if (raw_velocity_z != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float horizontal = 9;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_horizontal = this->_internal_horizontal();
-  uint32_t raw_horizontal;
-  memcpy(&raw_horizontal, &tmp_horizontal, sizeof(tmp_horizontal));
-  if (raw_horizontal != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float vertical = 10;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_vertical = this->_internal_vertical();
-  uint32_t raw_vertical;
-  memcpy(&raw_vertical, &tmp_vertical, sizeof(tmp_vertical));
-  if (raw_vertical != 0) {
-    total_size += 1 + 4;
-  }
-
-  // uint64 timestamp = 11;
-  if (this->_internal_timestamp() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_timestamp());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -572,74 +1263,27 @@ void MoveRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_player_id() != 0) {
-    _this->_internal_set_player_id(from._internal_player_id());
+  if (from._internal_has_position()) {
+    _this->_internal_mutable_position()->::Vector3D::MergeFrom(
+        from._internal_position());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_x = from._internal_position_x();
-  uint32_t raw_position_x;
-  memcpy(&raw_position_x, &tmp_position_x, sizeof(tmp_position_x));
-  if (raw_position_x != 0) {
-    _this->_internal_set_position_x(from._internal_position_x());
+  if (from._internal_has_velocity()) {
+    _this->_internal_mutable_velocity()->::Vector3D::MergeFrom(
+        from._internal_velocity());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_y = from._internal_position_y();
-  uint32_t raw_position_y;
-  memcpy(&raw_position_y, &tmp_position_y, sizeof(tmp_position_y));
-  if (raw_position_y != 0) {
-    _this->_internal_set_position_y(from._internal_position_y());
+  if (from._internal_has_mouse_move()) {
+    _this->_internal_mutable_mouse_move()->::Vector2D::MergeFrom(
+        from._internal_mouse_move());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_z = from._internal_position_z();
-  uint32_t raw_position_z;
-  memcpy(&raw_position_z, &tmp_position_z, sizeof(tmp_position_z));
-  if (raw_position_z != 0) {
-    _this->_internal_set_position_z(from._internal_position_z());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_rotation_y = from._internal_rotation_y();
-  uint32_t raw_rotation_y;
-  memcpy(&raw_rotation_y, &tmp_rotation_y, sizeof(tmp_rotation_y));
-  if (raw_rotation_y != 0) {
-    _this->_internal_set_rotation_y(from._internal_rotation_y());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_x = from._internal_velocity_x();
-  uint32_t raw_velocity_x;
-  memcpy(&raw_velocity_x, &tmp_velocity_x, sizeof(tmp_velocity_x));
-  if (raw_velocity_x != 0) {
-    _this->_internal_set_velocity_x(from._internal_velocity_x());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_y = from._internal_velocity_y();
-  uint32_t raw_velocity_y;
-  memcpy(&raw_velocity_y, &tmp_velocity_y, sizeof(tmp_velocity_y));
-  if (raw_velocity_y != 0) {
-    _this->_internal_set_velocity_y(from._internal_velocity_y());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_velocity_z = from._internal_velocity_z();
-  uint32_t raw_velocity_z;
-  memcpy(&raw_velocity_z, &tmp_velocity_z, sizeof(tmp_velocity_z));
-  if (raw_velocity_z != 0) {
-    _this->_internal_set_velocity_z(from._internal_velocity_z());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_horizontal = from._internal_horizontal();
-  uint32_t raw_horizontal;
-  memcpy(&raw_horizontal, &tmp_horizontal, sizeof(tmp_horizontal));
-  if (raw_horizontal != 0) {
-    _this->_internal_set_horizontal(from._internal_horizontal());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_vertical = from._internal_vertical();
-  uint32_t raw_vertical;
-  memcpy(&raw_vertical, &tmp_vertical, sizeof(tmp_vertical));
-  if (raw_vertical != 0) {
-    _this->_internal_set_vertical(from._internal_vertical());
+  if (from._internal_has_camera()) {
+    _this->_internal_mutable_camera()->::CameraClient::MergeFrom(
+        from._internal_camera());
   }
   if (from._internal_timestamp() != 0) {
     _this->_internal_set_timestamp(from._internal_timestamp());
+  }
+  if (from._internal_player_id() != 0) {
+    _this->_internal_set_player_id(from._internal_player_id());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -659,25 +1303,30 @@ void MoveRequest::InternalSwap(MoveRequest* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(MoveRequest, _impl_.timestamp_)
-      + sizeof(MoveRequest::_impl_.timestamp_)
-      - PROTOBUF_FIELD_OFFSET(MoveRequest, _impl_.player_id_)>(
-          reinterpret_cast<char*>(&_impl_.player_id_),
-          reinterpret_cast<char*>(&other->_impl_.player_id_));
+      PROTOBUF_FIELD_OFFSET(MoveRequest, _impl_.player_id_)
+      + sizeof(MoveRequest::_impl_.player_id_)
+      - PROTOBUF_FIELD_OFFSET(MoveRequest, _impl_.position_)>(
+          reinterpret_cast<char*>(&_impl_.position_),
+          reinterpret_cast<char*>(&other->_impl_.position_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata MoveRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_mmo_2eproto_getter, &descriptor_table_mmo_2eproto_once,
-      file_level_metadata_mmo_2eproto[0]);
+      file_level_metadata_mmo_2eproto[3]);
 }
 
 // ===================================================================
 
 class MoveBroadcast::_Internal {
  public:
+  static const ::Vector3D& position(const MoveBroadcast* msg);
 };
 
+const ::Vector3D&
+MoveBroadcast::_Internal::position(const MoveBroadcast* msg) {
+  return *msg->_impl_.position_;
+}
 MoveBroadcast::MoveBroadcast(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
@@ -688,19 +1337,19 @@ MoveBroadcast::MoveBroadcast(const MoveBroadcast& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   MoveBroadcast* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.player_id_){}
-    , decltype(_impl_.position_x_){}
-    , decltype(_impl_.position_y_){}
-    , decltype(_impl_.position_z_){}
-    , decltype(_impl_.server_time_){}
-    , decltype(_impl_.rotation_y_){}
+      decltype(_impl_.position_){nullptr}
+    , decltype(_impl_.player_id_){}
     , decltype(_impl_.state_){}
+    , decltype(_impl_.server_time_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  if (from._internal_has_position()) {
+    _this->_impl_.position_ = new ::Vector3D(*from._impl_.position_);
+  }
   ::memcpy(&_impl_.player_id_, &from._impl_.player_id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.state_) -
-    reinterpret_cast<char*>(&_impl_.player_id_)) + sizeof(_impl_.state_));
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.server_time_) -
+    reinterpret_cast<char*>(&_impl_.player_id_)) + sizeof(_impl_.server_time_));
   // @@protoc_insertion_point(copy_constructor:MoveBroadcast)
 }
 
@@ -709,13 +1358,10 @@ inline void MoveBroadcast::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.player_id_){0u}
-    , decltype(_impl_.position_x_){0}
-    , decltype(_impl_.position_y_){0}
-    , decltype(_impl_.position_z_){0}
-    , decltype(_impl_.server_time_){uint64_t{0u}}
-    , decltype(_impl_.rotation_y_){0}
+      decltype(_impl_.position_){nullptr}
+    , decltype(_impl_.player_id_){0u}
     , decltype(_impl_.state_){0u}
+    , decltype(_impl_.server_time_){uint64_t{0u}}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -731,6 +1377,7 @@ MoveBroadcast::~MoveBroadcast() {
 
 inline void MoveBroadcast::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  if (this != internal_default_instance()) delete _impl_.position_;
 }
 
 void MoveBroadcast::SetCachedSize(int size) const {
@@ -743,9 +1390,13 @@ void MoveBroadcast::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  if (GetArenaForAllocation() == nullptr && _impl_.position_ != nullptr) {
+    delete _impl_.position_;
+  }
+  _impl_.position_ = nullptr;
   ::memset(&_impl_.player_id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.state_) -
-      reinterpret_cast<char*>(&_impl_.player_id_)) + sizeof(_impl_.state_));
+      reinterpret_cast<char*>(&_impl_.server_time_) -
+      reinterpret_cast<char*>(&_impl_.player_id_)) + sizeof(_impl_.server_time_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -763,49 +1414,25 @@ const char* MoveBroadcast::_InternalParse(const char* ptr, ::_pbi::ParseContext*
         } else
           goto handle_unusual;
         continue;
-      // float position_x = 2;
+      // .Vector3D position = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 21)) {
-          _impl_.position_x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // float position_y = 3;
+      // uint64 server_time = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 29)) {
-          _impl_.position_y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float position_z = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 37)) {
-          _impl_.position_z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // float rotation_y = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 45)) {
-          _impl_.rotation_y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else
-          goto handle_unusual;
-        continue;
-      // uint64 server_time = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           _impl_.server_time_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // uint32 state = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 56)) {
+      // uint32 state = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
           _impl_.state_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
@@ -846,56 +1473,23 @@ uint8_t* MoveBroadcast::_InternalSerialize(
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_player_id(), target);
   }
 
-  // float position_x = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_x = this->_internal_position_x();
-  uint32_t raw_position_x;
-  memcpy(&raw_position_x, &tmp_position_x, sizeof(tmp_position_x));
-  if (raw_position_x != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this->_internal_position_x(), target);
+  // .Vector3D position = 2;
+  if (this->_internal_has_position()) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::position(this),
+        _Internal::position(this).GetCachedSize(), target, stream);
   }
 
-  // float position_y = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_y = this->_internal_position_y();
-  uint32_t raw_position_y;
-  memcpy(&raw_position_y, &tmp_position_y, sizeof(tmp_position_y));
-  if (raw_position_y != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this->_internal_position_y(), target);
-  }
-
-  // float position_z = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_z = this->_internal_position_z();
-  uint32_t raw_position_z;
-  memcpy(&raw_position_z, &tmp_position_z, sizeof(tmp_position_z));
-  if (raw_position_z != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(4, this->_internal_position_z(), target);
-  }
-
-  // float rotation_y = 5;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_rotation_y = this->_internal_rotation_y();
-  uint32_t raw_rotation_y;
-  memcpy(&raw_rotation_y, &tmp_rotation_y, sizeof(tmp_rotation_y));
-  if (raw_rotation_y != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(5, this->_internal_rotation_y(), target);
-  }
-
-  // uint64 server_time = 6;
+  // uint64 server_time = 3;
   if (this->_internal_server_time() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this->_internal_server_time(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(3, this->_internal_server_time(), target);
   }
 
-  // uint32 state = 7;
+  // uint32 state = 4;
   if (this->_internal_state() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(7, this->_internal_state(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(4, this->_internal_state(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -914,55 +1508,26 @@ size_t MoveBroadcast::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // .Vector3D position = 2;
+  if (this->_internal_has_position()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *_impl_.position_);
+  }
+
   // uint32 player_id = 1;
   if (this->_internal_player_id() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_player_id());
   }
 
-  // float position_x = 2;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_x = this->_internal_position_x();
-  uint32_t raw_position_x;
-  memcpy(&raw_position_x, &tmp_position_x, sizeof(tmp_position_x));
-  if (raw_position_x != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float position_y = 3;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_y = this->_internal_position_y();
-  uint32_t raw_position_y;
-  memcpy(&raw_position_y, &tmp_position_y, sizeof(tmp_position_y));
-  if (raw_position_y != 0) {
-    total_size += 1 + 4;
-  }
-
-  // float position_z = 4;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_z = this->_internal_position_z();
-  uint32_t raw_position_z;
-  memcpy(&raw_position_z, &tmp_position_z, sizeof(tmp_position_z));
-  if (raw_position_z != 0) {
-    total_size += 1 + 4;
-  }
-
-  // uint64 server_time = 6;
-  if (this->_internal_server_time() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_server_time());
-  }
-
-  // float rotation_y = 5;
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_rotation_y = this->_internal_rotation_y();
-  uint32_t raw_rotation_y;
-  memcpy(&raw_rotation_y, &tmp_rotation_y, sizeof(tmp_rotation_y));
-  if (raw_rotation_y != 0) {
-    total_size += 1 + 4;
-  }
-
-  // uint32 state = 7;
+  // uint32 state = 4;
   if (this->_internal_state() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_state());
+  }
+
+  // uint64 server_time = 3;
+  if (this->_internal_server_time() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this->_internal_server_time());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -983,42 +1548,18 @@ void MoveBroadcast::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from._internal_has_position()) {
+    _this->_internal_mutable_position()->::Vector3D::MergeFrom(
+        from._internal_position());
+  }
   if (from._internal_player_id() != 0) {
     _this->_internal_set_player_id(from._internal_player_id());
   }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_x = from._internal_position_x();
-  uint32_t raw_position_x;
-  memcpy(&raw_position_x, &tmp_position_x, sizeof(tmp_position_x));
-  if (raw_position_x != 0) {
-    _this->_internal_set_position_x(from._internal_position_x());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_y = from._internal_position_y();
-  uint32_t raw_position_y;
-  memcpy(&raw_position_y, &tmp_position_y, sizeof(tmp_position_y));
-  if (raw_position_y != 0) {
-    _this->_internal_set_position_y(from._internal_position_y());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_position_z = from._internal_position_z();
-  uint32_t raw_position_z;
-  memcpy(&raw_position_z, &tmp_position_z, sizeof(tmp_position_z));
-  if (raw_position_z != 0) {
-    _this->_internal_set_position_z(from._internal_position_z());
+  if (from._internal_state() != 0) {
+    _this->_internal_set_state(from._internal_state());
   }
   if (from._internal_server_time() != 0) {
     _this->_internal_set_server_time(from._internal_server_time());
-  }
-  static_assert(sizeof(uint32_t) == sizeof(float), "Code assumes uint32_t and float are the same size.");
-  float tmp_rotation_y = from._internal_rotation_y();
-  uint32_t raw_rotation_y;
-  memcpy(&raw_rotation_y, &tmp_rotation_y, sizeof(tmp_rotation_y));
-  if (raw_rotation_y != 0) {
-    _this->_internal_set_rotation_y(from._internal_rotation_y());
-  }
-  if (from._internal_state() != 0) {
-    _this->_internal_set_state(from._internal_state());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1038,21 +1579,33 @@ void MoveBroadcast::InternalSwap(MoveBroadcast* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(MoveBroadcast, _impl_.state_)
-      + sizeof(MoveBroadcast::_impl_.state_)
-      - PROTOBUF_FIELD_OFFSET(MoveBroadcast, _impl_.player_id_)>(
-          reinterpret_cast<char*>(&_impl_.player_id_),
-          reinterpret_cast<char*>(&other->_impl_.player_id_));
+      PROTOBUF_FIELD_OFFSET(MoveBroadcast, _impl_.server_time_)
+      + sizeof(MoveBroadcast::_impl_.server_time_)
+      - PROTOBUF_FIELD_OFFSET(MoveBroadcast, _impl_.position_)>(
+          reinterpret_cast<char*>(&_impl_.position_),
+          reinterpret_cast<char*>(&other->_impl_.position_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata MoveBroadcast::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_mmo_2eproto_getter, &descriptor_table_mmo_2eproto_once,
-      file_level_metadata_mmo_2eproto[1]);
+      file_level_metadata_mmo_2eproto[4]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::Vector2D*
+Arena::CreateMaybeMessage< ::Vector2D >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Vector2D >(arena);
+}
+template<> PROTOBUF_NOINLINE ::Vector3D*
+Arena::CreateMaybeMessage< ::Vector3D >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::Vector3D >(arena);
+}
+template<> PROTOBUF_NOINLINE ::CameraClient*
+Arena::CreateMaybeMessage< ::CameraClient >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::CameraClient >(arena);
+}
 template<> PROTOBUF_NOINLINE ::MoveRequest*
 Arena::CreateMaybeMessage< ::MoveRequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::MoveRequest >(arena);
