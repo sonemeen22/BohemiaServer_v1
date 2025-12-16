@@ -4,8 +4,10 @@
 #include <ctime>
 #include <iostream>
 #include <string>
+#include <chrono>
 #include <boost/asio.hpp>
 #include "proto/mmo.pb.h"
+#include "Util.hpp"
 
 using boost::asio::ip::tcp;
 
@@ -24,6 +26,16 @@ struct MovementInput
     float moveZ;
 };
 
+struct CameraInfo
+{
+    glm::vec3 forward;
+    glm::vec3 right;
+};
+
+constexpr int FPS = 30;
+constexpr std::chrono::milliseconds FRAME_TIME(1000 / FPS);
+constexpr float kStepTime = 1000 / FPS;
+
 // GameServer.cpp - 集成NavMesh到游戏服务器
 class GameServer {
 private:
@@ -31,6 +43,14 @@ private:
     std::shared_ptr<NavMeshCollisionSystem> collisionSystem_;
     std::shared_ptr<NavMeshPathFinder> pathFinder_;
     const int port_ = 1008;
+
+    glm::vec2 mouse_input_;
+    CameraInfo camera_info_;
+    glm::vec3 position_;
+    glm::vec3 projected_velocity_;
+    glm::vec3 normal_vector_;
+
+    float movement_speed_ = 5;
 
 public:
     bool Initialize() {
@@ -44,6 +64,10 @@ public:
         const auto& navMeshData = navMeshLoader_.GetData();
         collisionSystem_ = std::make_shared<NavMeshCollisionSystem>(navMeshData);
         pathFinder_ = std::make_shared<NavMeshPathFinder>(navMeshData);
+
+        normal_vector_.x = 0;
+        normal_vector_.y = 1;
+        normal_vector_.z = 0;
 
         return true;
     }
@@ -119,6 +143,12 @@ public:
     void Run1()
     {
         try {
+            std::thread t_game(
+                &GameServer::GameRun,
+                this
+            );
+            t_game.detach();
+
             boost::asio::io_context io_context;
             tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));
 
@@ -183,12 +213,19 @@ public:
 
                     << std::endl;
 
+                Util::SetVec3(position_, req.position());
+                mouse_input_.x = req.mouse_move().x();
+                mouse_input_.y = req.mouse_move().y();
+                Util::SetVec3(camera_info_.forward, req.camera().forward());
+                Util::SetVec3(camera_info_.right, req.camera().right());
+                //camera_info_.forward.x = 
+
                 // 4. 构建响应
                 MoveBroadcast broadcast;
                 broadcast.set_player_id(req.player_id());
-                broadcast.mutable_position()->set_x(req.position().x());
-                broadcast.mutable_position()->set_y(req.position().y());
-                broadcast.mutable_position()->set_z(req.position().z());
+                broadcast.mutable_position()->set_x(position_.x);
+                broadcast.mutable_position()->set_y(position_.y);
+                broadcast.mutable_position()->set_z(position_.z);
 
                 std::string out;
                 broadcast.SerializeToString(&out);
@@ -204,26 +241,40 @@ public:
         }
     }
 
-    void Run()
+    void GameRun()
     {
-        try
-        {
-            boost::asio::io_context io_context;
-            tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port_));
+        using clock = std::chrono::steady_clock;
+        auto nextFrameTime = clock::now();
 
-            for (;;) {
-                tcp::socket socket(io_context);
-                acceptor.accept(socket);
-                handle_client(std::move(socket));
-                io_context.run();
-                // 为每个客户端创建独立线程
-                //std::thread(handle_client, std::move(socket)).detach();
-            }
-        }
-        catch (std::exception& e)
+        while (true)
         {
-            std::cerr << e.what() << std::endl;
+            nextFrameTime += FRAME_TIME;
+
+            Update();
+
+            std::this_thread::sleep_until(nextFrameTime);
         }
+    }
+
+    void Update()
+    {
+        position_.x += projected_velocity_.x * kStepTime;
+        position_.y += projected_velocity_.y * kStepTime;
+        position_.z += projected_velocity_.z * kStepTime;
+    }
+
+    void HandleMovement()
+    {
+        glm::vec3 moveDirection;
+        moveDirection = camera_info_.forward * mouse_input_.y;
+        moveDirection += camera_info_.right * mouse_input_.x;
+        moveDirection = glm::normalize(moveDirection);
+        moveDirection.y = 0;
+
+        float speed = movement_speed_;
+        moveDirection *= speed;
+
+        glm::vec3 projected_velocity_ = Util::ProjectOnPlane(moveDirection, normal_vector_);
     }
 
     void handle_client(tcp::socket socket)
