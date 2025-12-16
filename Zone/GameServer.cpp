@@ -128,7 +128,12 @@ public:
             acceptor.accept(socket);
             std::cout << "Client connected.\n";
 
-            handle_client1(std::move(socket));
+            std::thread t(
+                &GameServer::handle_client1,
+                this,
+                std::move(socket)
+            );
+            t.detach();
         }
         catch (std::exception& e) {
             std::cerr << "Exception: " << e.what() << "\n";
