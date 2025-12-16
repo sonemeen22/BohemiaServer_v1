@@ -8,7 +8,7 @@ int main()
 {
     GameServer game_server;
     game_server.Initialize();
-    game_server.Run1();
+    game_server.Run();
     /*try {
         boost::asio::io_context io_context;
         tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));

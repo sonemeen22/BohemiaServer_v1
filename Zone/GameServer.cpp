@@ -32,9 +32,15 @@ struct CameraInfo
     glm::vec3 right;
 };
 
+struct PlayerInputSnapshot
+{
+    glm::vec2 mouse;
+    CameraInfo camera;
+};
+
 constexpr int FPS = 30;
 constexpr std::chrono::milliseconds FRAME_TIME(1000 / FPS);
-constexpr float kStepTime = 1000 / FPS;
+constexpr float kStepTime = 1.0f / FPS;
 
 // GameServer.cpp - 集成NavMesh到游戏服务器
 class GameServer {
@@ -51,6 +57,14 @@ private:
     glm::vec3 normal_vector_;
 
     float movement_speed_ = 5;
+
+    std::mutex input_mtx_;
+    PlayerInputSnapshot latest_input_;
+    std::atomic<bool> has_input_{ false };
+
+    std::mutex position_mtx_;
+
+    boost::asio::io_context io_context_;
 
 public:
     bool Initialize() {
@@ -69,101 +83,36 @@ public:
         normal_vector_.y = 1;
         normal_vector_.z = 0;
 
+        position_.x = 0;
+        position_.y = 0;
+        position_.z = 0;
+
         return true;
     }
 
-    /*void Run()
-    {
-        try
-        {
-            boost::asio::io_context io_context;
-
-            tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port_));
-
-            for (;;)
-            {
-                tcp::socket socket(io_context);
-                acceptor.accept(socket);
-
-                std::array<char, 1024> buf;
-                boost::system::error_code error;
-
-                MoveRequest move_request;
-
-                std::vector<char> buffer;
-                char temp_buffer[1024];
-
-                size_t len = socket.receive(boost::asio::buffer(buf), 0, error);
-
-                if (error == boost::asio::error::eof)
-                {
-                    break; // Connection closed cleanly by peer.
-                }
-                else if (error)
-                {
-                    throw boost::system::system_error(error); // Some other error.
-                }
-
-                //std::cout.write(buf.data(), len);
-                std::string data(buf.data());
-                
-                move_request.ParseFromString(data);
-                std::cout << "MoveRequest player_id:" << move_request.player_id();
-                std::cout << ",position_x:" << move_request.position_x();
-                std::cout << ",position_y:" << move_request.position_y();
-                std::cout << ",position_z:" << move_request.position_z() << std::endl;
-
-                MoveBroadcast move_broadcast;
-                move_broadcast.set_player_id(move_request.player_id());
-                move_broadcast.set_position_x(move_request.position_x());
-                move_broadcast.set_position_y(move_request.position_y());
-                move_broadcast.set_position_z(move_request.position_z());
-
-                // 序列化 MoveBroadcast 为字符串
-                std::string serialized_data;
-                if (!move_broadcast.SerializeToString(&serialized_data))
-                {
-                    std::cerr << "Failed to serialize MoveBroadcast" << std::endl;
-                    continue;
-                }
-
-                // 发送序列化后的数据
-                boost::system::error_code ignored_error;
-                boost::asio::write(socket,
-                    boost::asio::buffer(serialized_data.data(), serialized_data.size()),
-                    ignored_error);
-            }
-        }
-        catch (std::exception& e)
-        {
-            std::cerr << e.what() << std::endl;
-        }
-    }*/
-
-    void Run1()
+    void Run()
     {
         try {
-            std::thread t_game(
-                &GameServer::GameRun,
-                this
-            );
-            t_game.detach();
+            std::thread gameThread(&GameServer::GameRun, this);
+            gameThread.detach();
 
-            boost::asio::io_context io_context;
-            tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));
+            tcp::acceptor acceptor(io_context_, tcp::endpoint(tcp::v4(), 8080));
 
             std::cout << "Server started on port 8080...\n";
 
-            tcp::socket socket(io_context);
-            acceptor.accept(socket);
-            std::cout << "Client connected.\n";
+            while (true)
+            {
+                tcp::socket socket(io_context_);
+                acceptor.accept(socket);
+                std::cout << "Client connected.\n";
 
-            std::thread t(
-                &GameServer::handle_client1,
-                this,
-                std::move(socket)
-            );
-            t.detach();
+                std::thread t(
+                    &GameServer::handle_client1,
+                    this,
+                    std::move(socket)
+                );
+                t.detach();
+            }
         }
         catch (std::exception& e) {
             std::cerr << "Exception: " << e.what() << "\n";
@@ -213,12 +162,32 @@ public:
 
                     << std::endl;
 
-                Util::SetVec3(position_, req.position());
-                mouse_input_.x = req.mouse_move().x();
+                //Util::SetVec3(position_, req.position());
+                /*mouse_input_.x = req.mouse_move().x();
                 mouse_input_.y = req.mouse_move().y();
                 Util::SetVec3(camera_info_.forward, req.camera().forward());
-                Util::SetVec3(camera_info_.right, req.camera().right());
-                //camera_info_.forward.x = 
+                Util::SetVec3(camera_info_.right, req.camera().right());*/
+
+                PlayerInputSnapshot snapshot;
+                snapshot.mouse = {
+                    req.mouse_move().x(),
+                    req.mouse_move().y()
+                };
+                Util::SetVec3(snapshot.camera.forward, req.camera().forward());
+                Util::SetVec3(snapshot.camera.right, req.camera().right());
+
+                {
+                    std::lock_guard<std::mutex> lock(input_mtx_);
+                    latest_input_ = snapshot;
+                    has_input_ = true;
+                }
+
+                glm::vec3 position_snapshot;
+                {
+                    // 轻量锁，或 atomic / double buffer
+                    std::lock_guard<std::mutex> lock(position_mtx_);
+                    position_snapshot = position_;
+                }
 
                 // 4. 构建响应
                 MoveBroadcast broadcast;
@@ -258,23 +227,44 @@ public:
 
     void Update()
     {
+        PlayerInputSnapshot input{};
+
+        if (has_input_)
+        {
+            std::lock_guard<std::mutex> lock(input_mtx_);
+            input = latest_input_;
+            has_input_ = false;
+        }
+
+        HandleMovement(input);
+
+        {
+            std::lock_guard<std::mutex> lock(position_mtx_);
+            position_ += projected_velocity_ * kStepTime;
+        }
+
+        /*std::lock_guard<std::mutex> lock(mtx);
         position_.x += projected_velocity_.x * kStepTime;
         position_.y += projected_velocity_.y * kStepTime;
-        position_.z += projected_velocity_.z * kStepTime;
+        position_.z += projected_velocity_.z * kStepTime;*/
     }
 
-    void HandleMovement()
+    void HandleMovement(const PlayerInputSnapshot& input)
     {
-        glm::vec3 moveDirection;
-        moveDirection = camera_info_.forward * mouse_input_.y;
-        moveDirection += camera_info_.right * mouse_input_.x;
-        moveDirection = glm::normalize(moveDirection);
+        glm::vec3 moveDirection =
+            input.camera.forward * input.mouse.y +
+            input.camera.right * input.mouse.x;
+
+        if (glm::length(moveDirection) < 0.0001f)
+        {
+            projected_velocity_ = glm::vec3(0);
+            return;
+        }
+
         moveDirection.y = 0;
+        moveDirection = glm::normalize(moveDirection) * movement_speed_;
 
-        float speed = movement_speed_;
-        moveDirection *= speed;
-
-        glm::vec3 projected_velocity_ = Util::ProjectOnPlane(moveDirection, normal_vector_);
+        projected_velocity_ = Util::ProjectOnPlane(moveDirection, normal_vector_);
     }
 
     void handle_client(tcp::socket socket)
