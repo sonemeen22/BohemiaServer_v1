@@ -4,60 +4,6 @@
 #include <iostream>
 #include "Zone/GameServer.cpp"
 
-void handle_client(tcp::socket socket)
-{
-    try {
-        while (true)
-        {
-            // 1. 读取长度
-            uint32_t net_size;
-            boost::asio::read(socket, boost::asio::buffer(&net_size, sizeof(net_size)));
-
-            uint32_t size = ntohl(net_size);
-
-            // 2. 按长度读取完整消息
-            std::vector<char> buffer(size);
-            boost::asio::read(socket, boost::asio::buffer(buffer));
-
-            // 3. protobuf 解析
-            MoveRequest req;
-            if (!req.ParseFromArray(buffer.data(), buffer.size())) {
-                std::cerr << "Failed to parse MoveRequest\n";
-                break;
-            }
-
-            std::cout << "Player:" << req.player_id()
-                << " Pos x:" << req.position_x()
-                << " Pos y:" << req.position_y()
-                << " Pos z:" << req.position_z()
-                << " vx:" << req.velocity_x()
-                << " vy:" << req.velocity_y()
-                << " vz:" << req.velocity_z() 
-                << " horizontal:" << req.horizontal()
-                << " vertical:" << req.vertical()
-                << std::endl;
-
-            // 4. 构建响应
-            MoveBroadcast broadcast;
-            broadcast.set_player_id(req.player_id());
-            broadcast.set_position_x(req.position_x());
-            broadcast.set_position_y(req.position_y());
-            broadcast.set_position_z(req.position_z());
-
-            std::string out;
-            broadcast.SerializeToString(&out);
-
-            // 5. 发送（带长度）
-            uint32_t out_size = htonl(out.size());
-            boost::asio::write(socket, boost::asio::buffer(&out_size, 4));
-            boost::asio::write(socket, boost::asio::buffer(out));
-        }
-    }
-    catch (const std::exception& e) {
-        std::cout << "Client disconnected: " << e.what() << "\n";
-    }
-}
-
 int main()
 {
     GameServer game_server;

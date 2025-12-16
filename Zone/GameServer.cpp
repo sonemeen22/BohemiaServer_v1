@@ -145,6 +145,7 @@ public:
                 boost::asio::read(socket, boost::asio::buffer(&net_size, sizeof(net_size)));
 
                 uint32_t size = ntohl(net_size);
+                std::cout << "size:" << size << std::endl;
 
                 // 2. 按长度读取完整消息
                 std::vector<char> buffer(size);
@@ -179,12 +180,10 @@ public:
 
                 // 4. 构建响应
                 MoveBroadcast broadcast;
-                Vector3D position;
-                position.set_x(req.position().x());
-                position.set_y(req.position().y());
-                position.set_z(req.position().z());
                 broadcast.set_player_id(req.player_id());
-                broadcast.set_allocated_position(&position);
+                broadcast.mutable_position()->set_x(req.position().x());
+                broadcast.mutable_position()->set_y(req.position().y());
+                broadcast.mutable_position()->set_z(req.position().z());
 
                 std::string out;
                 broadcast.SerializeToString(&out);
