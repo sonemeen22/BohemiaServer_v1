@@ -38,6 +38,10 @@ struct PlayerInputSnapshot
     CameraInfo camera;
 };
 
+
+
+
+
 constexpr int FPS = 30;
 constexpr std::chrono::milliseconds FRAME_TIME(1000 / FPS);
 constexpr float kStepTime = 1.0f / FPS;
@@ -46,8 +50,7 @@ constexpr float kStepTime = 1.0f / FPS;
 class GameServer {
 private:
     NavMeshLoader navMeshLoader_;
-    std::shared_ptr<NavMeshCollisionSystem> collisionSystem_;
-    std::shared_ptr<NavMeshPathFinder> pathFinder_;
+    std::shared_ptr<NavMeshMovementSystem> collisionSystem_;
     const int port_ = 1008;
 
     glm::vec2 mouse_input_;
@@ -66,6 +69,10 @@ private:
 
     boost::asio::io_context io_context_;
 
+    Player player_;
+
+    ServerAgent server_agent_;
+
 public:
     bool Initialize() {
         // 1. 加载NavMesh数据
@@ -76,8 +83,7 @@ public:
 
         // 2. 初始化系统
         const auto& navMeshData = navMeshLoader_.GetData();
-        collisionSystem_ = std::make_shared<NavMeshCollisionSystem>(navMeshData);
-        pathFinder_ = std::make_shared<NavMeshPathFinder>(navMeshData);
+        collisionSystem_ = std::make_shared<NavMeshMovementSystem>(navMeshData);
 
         normal_vector_.x = 0;
         normal_vector_.y = 1;
@@ -86,6 +92,15 @@ public:
         position_.x = 0;
         position_.y = 0;
         position_.z = 0;
+
+        player_.height = 1.9;
+        player_.radius = 0.4;
+        player_.speed = 5;
+
+        server_agent_.position = position_;
+        server_agent_.currentTri = collisionSystem_->FindInitialTriangle(server_agent_.position, navMeshData);
+        server_agent_.maxSlopeRadians = 45;
+        server_agent_.maxStepHeight = 0.6f;
 
         return true;
     }
@@ -247,6 +262,8 @@ public:
             position_ += projected_velocity_ * kStepTime;
         }
 
+        ProcessPlayerMovement(player_);
+
         /*std::lock_guard<std::mutex> lock(mtx);
         position_.x += projected_velocity_.x * kStepTime;
         position_.y += projected_velocity_.y * kStepTime;
@@ -312,12 +329,10 @@ public:
         }
     }
 
-    void ProcessPlayerMovement(Player& player, const MovementInput& input) {
-        glm::vec3 desiredPosition = player.position;
+    /*void ProcessPlayerMovement(Player& player) {
+        std::lock_guard<std::mutex> lock(position_mtx_);
 
-        // 应用移动输入
-        desiredPosition.x += input.moveX * player.speed;
-        desiredPosition.z += input.moveZ * player.speed;
+        glm::vec3 desiredPosition = position_;
 
         // 碰撞检测
         CollisionInfo collision = collisionSystem_->CheckCharacterCollision(
@@ -326,6 +341,7 @@ public:
         if (collision.hasCollision) {
             // 处理碰撞响应
             glm::vec3 response = collision.collisionNormal * collision.penetrationDepth;
+            std::cout << "response x=" << response.x << " y=" << response.y << " z=" << response.z << std::endl;
             desiredPosition += response;
 
             // 再次验证位置
@@ -333,9 +349,12 @@ public:
                 desiredPosition, player.radius);
         }
 
+        position_ = desiredPosition;
+
         // 验证移动是否合法
-        if (IsMovementValid(player.position, desiredPosition, player.radius)) {
-            player.position = desiredPosition;
+        /*if (IsMovementValid(player.position, desiredPosition, player.radius)) {
+            //player.position = desiredPosition;
+            position_ = desiredPosition;
         }
         else {
             // 发送位置纠正
@@ -352,10 +371,10 @@ public:
 
         // 计算路径
         return pathFinder_->FindPath(walkableStart, walkableEnd);
-    }
+    }*/
 
 private:
-    bool IsMovementValid(const glm::vec3& from, const glm::vec3& to, float radius) {
+    /*bool IsMovementValid(const glm::vec3& from, const glm::vec3& to, float radius) {
         // 检查移动路径是否可行走
         glm::vec3 direction = to - from;
         float distance = glm::length(direction);
@@ -377,5 +396,5 @@ private:
         }
 
         return true;
-    }
+    }*/
 };

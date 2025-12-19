@@ -81,8 +81,49 @@ bool NavMeshLoader::LoadFromFile(const std::string& filepath) {
     std::cout << "NavMesh加载完成: " << data_.vertices.size() << " 顶点, "
         << triangleCount << " 三角形" << std::endl;
 
+    //构建三角形邻接三角形索引
+    BuildTriangleAdjacency();
+
     return true;
 }
+
+void NavMeshLoader::BuildTriangleAdjacency() {
+    using EdgeMap = std::unordered_map<
+        EdgeKey,
+        std::pair<uint32_t, int>,
+        EdgeKeyHash
+    >;
+
+    EdgeMap edgeMap;
+
+    for (uint32_t triIdx = 0; triIdx < data_.triangles.size(); ++triIdx) {
+        auto& tri = data_.triangles[triIdx];
+
+        const glm::vec3 verts[3] = { tri.v0, tri.v1, tri.v2 };
+
+        for (int edge = 0; edge < 3; ++edge) {
+            EdgeKey key{
+                verts[edge],
+                verts[(edge + 1) % 3]
+            };
+
+            auto it = edgeMap.find(key);
+            if (it == edgeMap.end()) {
+                // 第一次看到这条边
+                edgeMap[key] = { triIdx, edge };
+            }
+            else {
+                // 找到邻接
+                uint32_t otherTri = it->second.first;
+                int otherEdge = it->second.second;
+
+                tri.neighbors[edge] = otherTri;
+                data_.triangles[otherTri].neighbors[otherEdge] = triIdx;
+            }
+        }
+    }
+}
+
 
 void NavMeshLoader::BuildSpatialGrid() {
     // 计算网格参数
