@@ -235,6 +235,10 @@ public:
             input = latest_input_;
             has_input_ = false;
         }
+        else {
+            std::lock_guard<std::mutex> lock(input_mtx_);
+            input = latest_input_;
+        }
 
         HandleMovement(input);
 
