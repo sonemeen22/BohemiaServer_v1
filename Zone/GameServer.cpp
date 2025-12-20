@@ -38,10 +38,6 @@ struct PlayerInputSnapshot
     CameraInfo camera;
 };
 
-
-
-
-
 constexpr int FPS = 30;
 constexpr std::chrono::milliseconds FRAME_TIME(1000 / FPS);
 constexpr float kStepTime = 1.0f / FPS;
@@ -50,7 +46,7 @@ constexpr float kStepTime = 1.0f / FPS;
 class GameServer {
 private:
     NavMeshLoader navMeshLoader_;
-    std::shared_ptr<NavMeshMovementSystem> collisionSystem_;
+    std::shared_ptr<NavMeshMovementSystem> move_system_;
     const int port_ = 1008;
 
     glm::vec2 mouse_input_;
@@ -73,6 +69,8 @@ private:
 
     ServerAgent server_agent_;
 
+    glm::vec3 desired_delta_;
+
 public:
     bool Initialize() {
         // 1. 加载NavMesh数据
@@ -83,7 +81,7 @@ public:
 
         // 2. 初始化系统
         const auto& navMeshData = navMeshLoader_.GetData();
-        collisionSystem_ = std::make_shared<NavMeshMovementSystem>(navMeshData);
+        move_system_ = std::make_shared<NavMeshMovementSystem>(navMeshData);
 
         normal_vector_.x = 0;
         normal_vector_.y = 1;
@@ -98,9 +96,15 @@ public:
         player_.speed = 5;
 
         server_agent_.position = position_;
-        server_agent_.currentTri = collisionSystem_->FindInitialTriangle(server_agent_.position, navMeshData);
+        server_agent_.currentTri = move_system_->FindInitialTriangle(server_agent_.position, navMeshData);
         server_agent_.maxSlopeRadians = 45;
         server_agent_.maxStepHeight = 0.6f;
+
+        server_agent_.position =
+            move_system_->ProjectToTrianglePlane(
+                server_agent_.position,
+                navMeshData.triangles[server_agent_.currentTri]
+            );
 
         return true;
     }
@@ -190,6 +194,7 @@ public:
                 };
                 Util::SetVec3(snapshot.camera.forward, req.camera().forward());
                 Util::SetVec3(snapshot.camera.right, req.camera().right());
+                
 
                 {
                     std::lock_guard<std::mutex> lock(input_mtx_);
@@ -197,27 +202,25 @@ public:
                     has_input_ = true;
                 }
 
-                glm::vec3 position_snapshot;
                 {
                     // 轻量锁，或 atomic / double buffer
                     std::lock_guard<std::mutex> lock(position_mtx_);
-                    position_snapshot = position_;
+
+                    // 4. 构建响应
+                    MoveBroadcast broadcast;
+                    broadcast.set_player_id(req.player_id());
+                    broadcast.mutable_position()->set_x(server_agent_.position.x);
+                    broadcast.mutable_position()->set_y(server_agent_.position.y);
+                    broadcast.mutable_position()->set_z(server_agent_.position.z);
+
+                    std::string out;
+                    broadcast.SerializeToString(&out);
+
+                    // 5. 发送（带长度）
+                    uint32_t out_size = htonl(out.size());
+                    boost::asio::write(socket, boost::asio::buffer(&out_size, 4));
+                    boost::asio::write(socket, boost::asio::buffer(out));
                 }
-
-                // 4. 构建响应
-                MoveBroadcast broadcast;
-                broadcast.set_player_id(req.player_id());
-                broadcast.mutable_position()->set_x(position_.x);
-                broadcast.mutable_position()->set_y(position_.y);
-                broadcast.mutable_position()->set_z(position_.z);
-
-                std::string out;
-                broadcast.SerializeToString(&out);
-
-                // 5. 发送（带长度）
-                uint32_t out_size = htonl(out.size());
-                boost::asio::write(socket, boost::asio::buffer(&out_size, 4));
-                boost::asio::write(socket, boost::asio::buffer(out));
             }
         }
         catch (const std::exception& e) {
@@ -243,34 +246,53 @@ public:
     void Update()
     {
         PlayerInputSnapshot input{};
-
-        if (has_input_)
         {
             std::lock_guard<std::mutex> lock(input_mtx_);
             input = latest_input_;
             has_input_ = false;
         }
+
+        // 计算期望移动
+        glm::vec3 moveDir =
+            input.camera.forward * input.mouse.y +
+            input.camera.right * input.mouse.x;
+
+        if (glm::length2(moveDir) < 1e-6f) {
+            desired_delta_ = glm::vec3(0);
+        }
         else {
-            std::lock_guard<std::mutex> lock(input_mtx_);
-            input = latest_input_;
+            moveDir.y = 0;
+            moveDir = glm::normalize(moveDir);
+            desired_delta_ = moveDir * movement_speed_ * kStepTime;
         }
 
-        HandleMovement(input);
-
+        // 服务器权威移动
         {
             std::lock_guard<std::mutex> lock(position_mtx_);
-            position_ += projected_velocity_ * kStepTime;
+            move_system_->TickMove(server_agent_, desired_delta_);
         }
-
-        ProcessPlayerMovement(player_);
-
-        /*std::lock_guard<std::mutex> lock(mtx);
-        position_.x += projected_velocity_.x * kStepTime;
-        position_.y += projected_velocity_.y * kStepTime;
-        position_.z += projected_velocity_.z * kStepTime;*/
     }
 
+
+
     void HandleMovement(const PlayerInputSnapshot& input)
+    {
+        glm::vec3 dir =
+            input.camera.forward * input.mouse.y +
+            input.camera.right * input.mouse.x;
+
+        if (glm::length(dir) < 0.001f) {
+            desired_delta_ = glm::vec3(0);
+            return;
+        }
+
+        dir.y = 0;
+        dir = glm::normalize(dir);
+
+        desired_delta_ = dir * movement_speed_ * kStepTime;
+    }
+
+    /*void HandleMovement(const PlayerInputSnapshot& input)
     {
         glm::vec3 moveDirection =
             input.camera.forward * input.mouse.y +
@@ -285,116 +307,6 @@ public:
         moveDirection.y = 0;
         moveDirection = glm::normalize(moveDirection) * movement_speed_;
 
-        projected_velocity_ = Util::ProjectOnPlane(moveDirection, normal_vector_);
-    }
-
-    void handle_client(tcp::socket socket)
-    {
-        try {
-            while (true)
-            {
-                // 1. 读取长度
-                uint32_t net_size;
-                boost::asio::read(socket, boost::asio::buffer(&net_size, sizeof(net_size)));
-
-                uint32_t size = ntohl(net_size);
-
-                // 2. 按长度读取完整消息
-                std::vector<char> buffer(size);
-                boost::asio::read(socket, boost::asio::buffer(buffer));
-
-                // 3. protobuf 解析
-                MoveRequest req;
-                if (!req.ParseFromArray(buffer.data(), buffer.size())) {
-                    std::cerr << "Failed to parse MoveRequest\n";
-                    break;
-                }
-
-
-                // 4. 构建响应
-                MoveBroadcast broadcast;
-                broadcast.set_player_id(req.player_id());
-
-                std::string out;
-                broadcast.SerializeToString(&out);
-
-                // 5. 发送（带长度）
-                uint32_t out_size = htonl(out.size());
-                boost::asio::write(socket, boost::asio::buffer(&out_size, 4));
-                boost::asio::write(socket, boost::asio::buffer(out));
-            }
-        }
-        catch (const std::exception& e) {
-            std::cout << "Client disconnected: " << e.what() << "\n";
-        }
-    }
-
-    /*void ProcessPlayerMovement(Player& player) {
-        std::lock_guard<std::mutex> lock(position_mtx_);
-
-        glm::vec3 desiredPosition = position_;
-
-        // 碰撞检测
-        CollisionInfo collision = collisionSystem_->CheckCharacterCollision(
-            desiredPosition, player.radius, player.height);
-
-        if (collision.hasCollision) {
-            // 处理碰撞响应
-            glm::vec3 response = collision.collisionNormal * collision.penetrationDepth;
-            std::cout << "response x=" << response.x << " y=" << response.y << " z=" << response.z << std::endl;
-            desiredPosition += response;
-
-            // 再次验证位置
-            desiredPosition = collisionSystem_->GetWalkablePosition(
-                desiredPosition, player.radius);
-        }
-
-        position_ = desiredPosition;
-
-        // 验证移动是否合法
-        /*if (IsMovementValid(player.position, desiredPosition, player.radius)) {
-            //player.position = desiredPosition;
-            position_ = desiredPosition;
-        }
-        else {
-            // 发送位置纠正
-            //SendPositionCorrection(player);
-        }
-    }
-
-    std::vector<glm::vec3> CalculatePath(const glm::vec3& start,
-        const glm::vec3& end,
-        float agentRadius) {
-        // 获取可行走起点和终点
-        glm::vec3 walkableStart = collisionSystem_->GetWalkablePosition(start, agentRadius);
-        glm::vec3 walkableEnd = collisionSystem_->GetWalkablePosition(end, agentRadius);
-
-        // 计算路径
-        return pathFinder_->FindPath(walkableStart, walkableEnd);
-    }*/
-
-private:
-    /*bool IsMovementValid(const glm::vec3& from, const glm::vec3& to, float radius) {
-        // 检查移动路径是否可行走
-        glm::vec3 direction = to - from;
-        float distance = glm::length(direction);
-
-        if (distance > 0) {
-            direction = direction / distance;
-
-            // 沿路径采样检查
-            int samples = static_cast<int>(distance / radius) + 1;
-            float step = distance / samples;
-
-            for (int i = 1; i <= samples; ++i) {
-                glm::vec3 samplePoint = from + direction * (step * i);
-
-                if (!pathFinder_->IsPointWalkable(samplePoint, radius)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+        //projected_velocity_ = Util::ProjectOnPlane(moveDirection, normal_vector_);
     }*/
 };

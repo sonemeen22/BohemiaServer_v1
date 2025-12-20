@@ -17,14 +17,10 @@ class NavMeshMovementSystem {
 public:
     NavMeshMovementSystem(const NavMeshData& navMesh);
 
-    void TickMove(
-        ServerAgent& agent,
-        const glm::vec3& desiredDelta
-    );
+    void TickMove(ServerAgent& agent, const glm::vec3& desiredDelta);
 
     uint32_t FindInitialTriangle(const glm::vec3& pos, const NavMeshData& navMesh);
 
-private:
     const NavMeshData& navMesh_;
 
     glm::vec3 ProjectToTrianglePlane(
@@ -54,4 +50,13 @@ private:
         const NavMeshTriangle& from,
         const NavMeshTriangle& to
     ) const;
+
+    glm::vec3 ClosestPointOnTriangle(
+        const glm::vec3& p,
+        const NavMeshTriangle& tri);
+
+    int FindCrossedEdge2D(
+        const glm::vec3& from,
+        const glm::vec3& to,
+        const NavMeshTriangle& tri);
 };

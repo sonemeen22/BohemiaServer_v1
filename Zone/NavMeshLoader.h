@@ -1,10 +1,14 @@
 // NavMeshLoader.h
 #pragma once
+
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include <vector>
 #include <string>
 #include "glm/glm.hpp"
 #include <glm/common.hpp>
 #include <glm/gtc/epsilon.hpp>
+#include <glm/gtx/norm.hpp> 
 #include <unordered_map>
 
 struct NavMeshTriangle {
