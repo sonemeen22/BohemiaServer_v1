@@ -18,6 +18,14 @@ struct NavMeshTriangle {
     float areaCost;
 
     uint32_t neighbors[3]; // 每条边一个
+
+    glm::vec3 GetEdgeDirection(int edge) const
+    {
+        const glm::vec3 verts[3] = { v0, v1, v2 };
+        glm::vec3 dir =
+            verts[(edge + 1) % 3] - verts[edge];
+        return glm::normalize(dir);
+    }
 };
 
 struct NavMeshData {

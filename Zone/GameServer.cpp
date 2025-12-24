@@ -8,16 +8,9 @@
 #include <boost/asio.hpp>
 #include "proto/mmo.pb.h"
 #include "Util.hpp"
+#include "MoveSystem.h"
 
 using boost::asio::ip::tcp;
-
-struct Player
-{
-    glm::vec3 position;
-    float radius;
-    float speed;
-    float height;
-};
 
 struct MovementInput
 {
@@ -46,7 +39,7 @@ constexpr float kStepTime = 1.0f / FPS;
 class GameServer {
 private:
     NavMeshLoader navMeshLoader_;
-    std::shared_ptr<NavMeshMovementSystem> move_system_;
+    std::shared_ptr<MoveSystem> move_system_;
     const int port_ = 1008;
 
     glm::vec2 mouse_input_;
@@ -81,7 +74,7 @@ public:
 
         // 2. 初始化系统
         const auto& navMeshData = navMeshLoader_.GetData();
-        move_system_ = std::make_shared<NavMeshMovementSystem>(navMeshData);
+        move_system_ = std::make_shared<MoveSystem>();
 
         normal_vector_.x = 0;
         normal_vector_.y = 1;
@@ -91,20 +84,11 @@ public:
         position_.y = 0;
         position_.z = 0;
 
-        player_.height = 1.9;
+        player_.position = PxVec3(0, 0, 0);
+        player_.halfHeight = 0.95;
         player_.radius = 0.4;
         player_.speed = 5;
-
-        server_agent_.position = position_;
-        server_agent_.currentTri = move_system_->FindInitialTriangle(server_agent_.position, navMeshData);
-        server_agent_.maxSlopeRadians = 45;
-        server_agent_.maxStepHeight = 0.6f;
-
-        server_agent_.position =
-            move_system_->ProjectToTrianglePlane(
-                server_agent_.position,
-                navMeshData.triangles[server_agent_.currentTri]
-            );
+        player_.velocity = PxVec3(0, 0, 0);
 
         return true;
     }
@@ -209,9 +193,9 @@ public:
                     // 4. 构建响应
                     MoveBroadcast broadcast;
                     broadcast.set_player_id(req.player_id());
-                    broadcast.mutable_position()->set_x(server_agent_.position.x);
-                    broadcast.mutable_position()->set_y(server_agent_.position.y);
-                    broadcast.mutable_position()->set_z(server_agent_.position.z);
+                    broadcast.mutable_position()->set_x(player_.position.x);
+                    broadcast.mutable_position()->set_y(player_.position.y);
+                    broadcast.mutable_position()->set_z(player_.position.z);
 
                     std::string out;
                     broadcast.SerializeToString(&out);
@@ -246,53 +230,30 @@ public:
     void Update()
     {
         PlayerInputSnapshot input{};
+        bool has_input = false;
+
         {
             std::lock_guard<std::mutex> lock(input_mtx_);
-            input = latest_input_;
-            has_input_ = false;
+            if (has_input_) {
+                input = latest_input_;
+                has_input = true;
+            }
+            else
+            {
+                input = latest_input_;
+            }
         }
 
-        // 计算期望移动
-        glm::vec3 moveDir =
-            input.camera.forward * input.mouse.y +
-            input.camera.right * input.mouse.x;
-
-        if (glm::length2(moveDir) < 1e-6f) {
-            desired_delta_ = glm::vec3(0);
-        }
-        else {
-            moveDir.y = 0;
-            moveDir = glm::normalize(moveDir);
-            desired_delta_ = moveDir * movement_speed_ * kStepTime;
-        }
+        HandleMovement(input);
 
         // 服务器权威移动
         {
             std::lock_guard<std::mutex> lock(position_mtx_);
-            move_system_->TickMove(server_agent_, desired_delta_);
+            move_system_->ServerTick(player_, kStepTime);
         }
     }
-
-
 
     void HandleMovement(const PlayerInputSnapshot& input)
-    {
-        glm::vec3 dir =
-            input.camera.forward * input.mouse.y +
-            input.camera.right * input.mouse.x;
-
-        if (glm::length(dir) < 0.001f) {
-            desired_delta_ = glm::vec3(0);
-            return;
-        }
-
-        dir.y = 0;
-        dir = glm::normalize(dir);
-
-        desired_delta_ = dir * movement_speed_ * kStepTime;
-    }
-
-    /*void HandleMovement(const PlayerInputSnapshot& input)
     {
         glm::vec3 moveDirection =
             input.camera.forward * input.mouse.y +
@@ -307,6 +268,8 @@ public:
         moveDirection.y = 0;
         moveDirection = glm::normalize(moveDirection) * movement_speed_;
 
-        //projected_velocity_ = Util::ProjectOnPlane(moveDirection, normal_vector_);
-    }*/
+        projected_velocity_ = Util::ProjectOnPlane(moveDirection, normal_vector_);
+        
+        Util::SetPxVec3(player_.velocity, projected_velocity_);
+    }
 };

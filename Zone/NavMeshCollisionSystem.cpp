@@ -12,66 +12,19 @@ void NavMeshMovementSystem::TickMove(
     ServerAgent& agent,
     const glm::vec3& desiredDelta)
 {
-    // 0. 零位移保护
     if (glm::length2(desiredDelta) < 1e-8f)
-    {
         return;
-    }
 
-    // 1. 当前三角形索引合法性检查
-    if (agent.currentTri >= navMesh_.triangles.size()) {
-        std::cerr << "[TickMove] currentTri out of bounds!" << std::endl;
-        return;
-    }
+    MoveAlongResult r =
+        MoveAlongSurface(
+            agent.currentTri,
+            agent.position,
+            desiredDelta,
+            agent);
 
-    const NavMeshTriangle& tri = navMesh_.triangles[agent.currentTri];
-
-    // 2. 投影到当前三角形平面
-    glm::vec3 tryPos = agent.position + desiredDelta;
-    glm::vec3 projected = ProjectToTrianglePlane(tryPos, tri);
-
-    // 3. 如果仍在当前三角形内，直接移动
-    if (PointInTriangle(projected, tri)) {
-        agent.position = projected;
-        return;
-    }
-
-    // 4. 找穿越边
-    int edge = FindCrossedEdge2D(agent.position, projected, tri);
-
-    if (edge < 0 || edge >= 3) {
-        // 没找到边，夹在三角形内或原地保持
-        agent.position = ClosestPointOnTriangle(projected, tri);
-        return;
-    }
-
-    uint32_t nextTri = tri.neighbors[edge];
-
-    if (nextTri == UINT32_MAX || nextTri >= navMesh_.triangles.size()) {
-        // 撞墙，夹在边上
-        agent.position = ClampToEdge(projected, tri, edge);
-        return;
-    }
-
-    const NavMeshTriangle& next = navMesh_.triangles[nextTri];
-
-    // 5. 坡度 / 台阶限制
-    if (!CheckSlopeAndStep(agent, tri, next)) {
-        agent.position = ClampToEdge(projected, tri, edge);
-        return;
-    }
-
-    // 6. 合法切换到下一个三角形
-    agent.currentTri = nextTri;
-    agent.position = ProjectToTrianglePlane(tryPos, next);
-
-    // 防止y方向微小漂移导致穿模
-    if (glm::abs(agent.position.y - agent.position.y) < 1e-4f)
-    {
-        agent.position.y = agent.position.y;
-    }
+    agent.position = r.endPos;
+    agent.currentTri = r.endTri;
 }
-
 
 int NavMeshMovementSystem::FindCrossedEdge2D(
     const glm::vec3& from,
@@ -118,7 +71,7 @@ int NavMeshMovementSystem::FindCrossedEdge2D(
     return -1;
 }
 
-glm::vec3 NavMeshMovementSystem::ClosestPointOnTriangle(
+/*glm::vec3 NavMeshMovementSystem::ClosestPointOnTriangle(
     const glm::vec3& p,
     const NavMeshTriangle& tri)
 {
@@ -176,7 +129,7 @@ glm::vec3 NavMeshMovementSystem::ClosestPointOnTriangle(
     float w = vc * denom;
 
     return a + ab * v + ac * w;
-}
+}*/
 
 
 /*void NavMeshMovementSystem::TickMove(
@@ -336,4 +289,233 @@ uint32_t NavMeshMovementSystem::FindInitialTriangle(const glm::vec3& pos, const 
     return bestTri;
 }
 
+glm::vec3 NavMeshMovementSystem::ProjectVectorOnPlane(
+    const glm::vec3& v,
+    const glm::vec3& n)
+{
+    return v - glm::dot(v, n) * n;
+}
 
+MoveAlongResult NavMeshMovementSystem::MoveAlongSurface(
+    uint32_t startTri,
+    const glm::vec3& startPos,
+    const glm::vec3& moveDelta,
+    const ServerAgent& agent
+) const
+{
+    constexpr int   kMaxIters = 8;
+    constexpr float kEps = 1e-4f;
+
+    glm::vec3 pos = startPos;
+    glm::vec3 remaining = moveDelta;
+    pos += moveDelta;
+    uint32_t  curTri = startTri;
+
+    for (int iter = 0; iter < kMaxIters; ++iter)
+    {
+        if (glm::length2(remaining) < kEps * kEps)
+            break;
+
+        if (curTri >= navMesh_.triangles.size())
+            break;
+
+        const NavMeshTriangle& tri =
+            navMesh_.triangles[curTri];
+
+        glm::vec3 target =
+            pos;
+
+        glm::vec3 projected =
+            ProjectToTrianglePlane(target, tri);
+
+        // 1. 完全在当前三角形
+        if (PointInTriangle(projected, tri))
+        {
+            pos.y = projected.y;
+            break;
+        }
+
+        // 2. 找最先穿越的边
+        int   hitEdge = -1;
+        float hitT = 1.0f;
+
+        if (!FindFirstCrossedEdge(
+            pos, projected, tri,
+            hitEdge, hitT))
+        {
+            glm::vec3 pos1 = ClosestPointOnTriangle(projected, tri);
+            pos.y = pos1.y;
+            break;
+        }
+
+        // 3. 走到边界
+        glm::vec3 hitPos =
+            pos + (projected - pos) * hitT;
+
+        glm::vec3 travel =
+            hitPos - pos;
+
+        glm::vec3 pos1 = hitPos - tri.normal * kEps;
+
+        pos.y = pos1.y;
+
+        remaining -= travel;
+
+        uint32_t nextTri = tri.neighbors[hitEdge];
+
+        // 4. 撞墙 → 滑动
+        if (nextTri == UINT32_MAX ||
+            nextTri >= navMesh_.triangles.size())
+        {
+            glm::vec3 edgeDir =
+                tri.GetEdgeDirection(hitEdge);
+
+            remaining =
+                glm::dot(remaining, edgeDir) * edgeDir;
+
+            continue;
+        }
+
+        const NavMeshTriangle& next =
+            navMesh_.triangles[nextTri];
+
+        // 5. 坡度 / 台阶
+        if (!CheckSlopeAndStep(agent, tri, next))
+        {
+            glm::vec3 edgeDir =
+                tri.GetEdgeDirection(hitEdge);
+
+            remaining =
+                glm::dot(remaining, edgeDir) * edgeDir;
+
+            continue;
+        }
+
+        // 6. 合法穿越
+        curTri = nextTri;
+
+        remaining =
+            ProjectVectorOnPlane(
+                remaining, next.normal);
+
+        pos.y = next.v0.y;
+    }
+
+    return { pos, curTri };
+}
+
+bool NavMeshMovementSystem::FindFirstCrossedEdge(
+    const glm::vec3& from,
+    const glm::vec3& to,
+    const NavMeshTriangle& tri,
+    int& outEdge,
+    float& outT
+) const
+{
+    constexpr float kEps = 1e-5f;
+
+    outEdge = -1;
+    outT = 1.0f;
+
+    const glm::vec3 verts[3] = {
+        tri.v0, tri.v1, tri.v2
+    };
+
+    for (int i = 0; i < 3; ++i)
+    {
+        const glm::vec3& a = verts[i];
+        const glm::vec3& b = verts[(i + 1) % 3];
+
+        // 边外法线（指向三角形外侧）
+        glm::vec3 edgeNormal =
+            glm::cross(b - a, tri.normal);
+
+        float d0 = glm::dot(from - a, edgeNormal);
+        float d1 = glm::dot(to - a, edgeNormal);
+
+        // from 在内侧或边界，to 到外侧
+        if (d0 >= -kEps && d1 < -kEps)
+        {
+            float t = d0 / (d0 - d1); // 线段参数
+
+            if (t < outT)
+            {
+                outT = t;
+                outEdge = i;
+            }
+        }
+    }
+
+    return outEdge != -1;
+}
+
+glm::vec3 NavMeshMovementSystem::ClosestPointOnTriangle(
+    const glm::vec3& p,
+    const NavMeshTriangle& tri
+) const
+{
+    const glm::vec3& a = tri.v0;
+    const glm::vec3& b = tri.v1;
+    const glm::vec3& c = tri.v2;
+
+    glm::vec3 ab = b - a;
+    glm::vec3 ac = c - a;
+    glm::vec3 ap = p - a;
+
+    float d1 = glm::dot(ab, ap);
+    float d2 = glm::dot(ac, ap);
+    if (d1 <= 0.0f && d2 <= 0.0f) return a;
+
+    glm::vec3 bp = p - b;
+    float d3 = glm::dot(ab, bp);
+    float d4 = glm::dot(ac, bp);
+    if (d3 >= 0.0f && d4 <= d3) return b;
+
+    float vc = d1 * d4 - d3 * d2;
+    if (vc <= 0.0f && d1 >= 0.0f && d3 <= 0.0f)
+    {
+        float v = d1 / (d1 - d3);
+        return a + v * ab;
+    }
+
+    glm::vec3 cp = p - c;
+    float d5 = glm::dot(ab, cp);
+    float d6 = glm::dot(ac, cp);
+    if (d6 >= 0.0f && d5 <= d6) return c;
+
+    float vb = d5 * d2 - d1 * d6;
+    if (vb <= 0.0f && d2 >= 0.0f && d6 <= 0.0f)
+    {
+        float w = d2 / (d2 - d6);
+        return a + w * ac;
+    }
+
+    float va = d3 * d6 - d5 * d4;
+    if (va <= 0.0f && (d4 - d3) >= 0.0f && (d5 - d6) >= 0.0f)
+    {
+        float w = (d4 - d3) / ((d4 - d3) + (d5 - d6));
+        return b + w * (c - b);
+    }
+
+    float denom = 1.0f / (va + vb + vc);
+    float v = vb * denom;
+    float w = vc * denom;
+
+    return a + ab * v + ac * w;
+}
+
+glm::vec3 NavMeshMovementSystem::ProjectVectorOnPlane(
+    const glm::vec3& v,
+    const glm::vec3& planeNormal
+) const
+{
+    glm::vec3 n = planeNormal;
+    float len2 = glm::length2(n);
+
+    if (len2 < 1e-8f)
+        return v;
+
+    n /= sqrt(len2);
+
+    return v - glm::dot(v, n) * n;
+}

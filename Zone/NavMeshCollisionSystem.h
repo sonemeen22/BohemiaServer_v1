@@ -13,6 +13,12 @@ struct ServerAgent {
     float maxStepHeight = 0.6f;
 };
 
+struct MoveAlongResult
+{
+    glm::vec3 endPos;
+    uint32_t  endTri;
+};
+
 class NavMeshMovementSystem {
 public:
     NavMeshMovementSystem(const NavMeshData& navMesh);
@@ -22,6 +28,13 @@ public:
     uint32_t FindInitialTriangle(const glm::vec3& pos, const NavMeshData& navMesh);
 
     const NavMeshData& navMesh_;
+
+    MoveAlongResult MoveAlongSurface(
+        uint32_t startTri,
+        const glm::vec3& startPos,
+        const glm::vec3& moveDelta,
+        const ServerAgent& agent
+    ) const;
 
     glm::vec3 ProjectToTrianglePlane(
         const glm::vec3& p,
@@ -53,10 +66,34 @@ public:
 
     glm::vec3 ClosestPointOnTriangle(
         const glm::vec3& p,
-        const NavMeshTriangle& tri);
+        const NavMeshTriangle& tri) const;
 
     int FindCrossedEdge2D(
         const glm::vec3& from,
         const glm::vec3& to,
         const NavMeshTriangle& tri);
+
+    bool FindFirstCrossedEdge(
+        const glm::vec3& from,
+        const glm::vec3& to,
+        const NavMeshTriangle& tri,
+        int& outEdge,
+        float& outT);
+
+    glm::vec3 ProjectVectorOnPlane(
+        const glm::vec3& v,
+        const glm::vec3& n);
+
+    bool FindFirstCrossedEdge(
+        const glm::vec3& from,
+        const glm::vec3& to,
+        const NavMeshTriangle& tri,
+        int& outEdge,
+        float& outT
+    ) const;
+
+    glm::vec3 ProjectVectorOnPlane(
+        const glm::vec3& v,
+        const glm::vec3& planeNormal
+    ) const;
 };

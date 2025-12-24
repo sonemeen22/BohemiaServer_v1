@@ -11,6 +11,13 @@ public:
 		gvec.z = vec.z();
 	}
 
+	static void SetPxVec3(PxVec3& gvec, const glm::vec3& vec)
+	{
+		gvec.x = vec.x;
+		gvec.y = vec.y;
+		gvec.z = vec.z;
+	}
+
 	// 工具函数
 	static glm::vec3 ProjectOnPlane(const glm::vec3& vector, const glm::vec3& planeNormal)
 	{
