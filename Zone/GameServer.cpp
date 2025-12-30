@@ -67,10 +67,10 @@ private:
 public:
     bool Initialize() {
         // 1. 加载NavMesh数据
-        if (!navMeshLoader_.LoadFromFile("Data/navmesh_data.bin")) {
+        /*if (!navMeshLoader_.LoadFromFile("Data/navmesh_data.bin")) {
             std::cerr << "Failed to load NavMesh data" << std::endl;
             return false;
-        }
+        }*/
 
         // 2. 初始化系统
         const auto& navMeshData = navMeshLoader_.GetData();
@@ -89,6 +89,7 @@ public:
         player_.radius = 0.4;
         player_.speed = 5;
         player_.velocity = PxVec3(0, 0, 0);
+        player_.polyRef = 0;
 
         move_system_->Init(player_);
 
@@ -147,7 +148,7 @@ public:
                     break;
                 }
 
-                std::cout << "Player:" << req.player_id()
+                /*std::cout << "Player:" << req.player_id()
                     << " Pos x:" << req.position().x()
                     << " Pos y:" << req.position().y()
                     << " Pos z:" << req.position().z()
@@ -165,7 +166,7 @@ public:
                     << " right y:" << req.camera().right().y()
                     << " right z:" << req.camera().right().z()
 
-                    << std::endl;
+                    << std::endl;*/
 
                 //Util::SetVec3(position_, req.position());
                 /*mouse_input_.x = req.mouse_move().x();

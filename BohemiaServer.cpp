@@ -3,12 +3,16 @@
 
 #include <iostream>
 #include "Zone/GameServer.cpp"
+//#include "Zone/GenNavMesh.h"
 
 int main()
 {
     GameServer game_server;
     game_server.Initialize();
     game_server.Run();
+    /*NavMeshManager obj;
+    int res = obj.GenNavMesh();
+    std::cout << "res=" << res << std::endl;*/
     /*try {
         boost::asio::io_context io_context;
         tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), 8080));
