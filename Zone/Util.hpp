@@ -1,5 +1,8 @@
 #include "glm/glm.hpp"
 #include "proto/mmo.pb.h"
+#include <PxPhysicsAPI.h>
+
+using namespace physx;
 
 class Util
 {

@@ -3,8 +3,6 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 
-#include <vector>
-#include <string>
 #include "glm/glm.hpp"
 #include <glm/common.hpp>
 #include <glm/gtc/epsilon.hpp>
@@ -12,6 +10,7 @@
 #include <unordered_map>
 // ===== PhysX 核心 =====
 #include <PxPhysicsAPI.h>
+#include "extensions/PxDefaultSimulationFilterShader.h"
 
 // Detour
 #include <DetourNavMesh.h>
@@ -21,9 +20,13 @@
 #include <fstream>
 #include <cassert>
 
+#include <vector>
+#include <string>
+#include <iostream>
+
 using namespace physx;
 
-typedef unsigned long long dtPolyRef;
+//typedef unsigned long long dtPolyRef;
 
 struct Player
 {

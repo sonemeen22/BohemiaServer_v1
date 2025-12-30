@@ -90,6 +90,8 @@ public:
         player_.speed = 5;
         player_.velocity = PxVec3(0, 0, 0);
 
+        move_system_->Init(player_);
+
         return true;
     }
 

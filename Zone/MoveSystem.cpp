@@ -1,8 +1,17 @@
 #include "MoveSystem.h"
 
+
+PxDefaultAllocator MoveSystem::gAllocator;
+PxDefaultErrorCallback MoveSystem::gErrorCallback;
+
 void MoveSystem::Init(Player& player)
 {
     LoadNavMeshFile("./Data/navmesh_data.bin");
+    InitNavQuery();
+    InitQueryFilter();
+
+    float start_pos[3] = { player.position.x, player.position.y, player.position.z };
+    FindPlayerPolyRef(start_pos, player.polyRef, start_pos);
 
     foundation = PxCreateFoundation(
         PX_PHYSICS_VERSION,
@@ -17,10 +26,13 @@ void MoveSystem::Init(Player& player)
     // CPU dispatcher
     sceneDesc.cpuDispatcher = PxDefaultCpuDispatcherCreate(2);
 
-    // 碰撞过滤（最简单）
+    // 碰撞过滤（PhysX 5 仍然有效）
     sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 
-    scene = physics->createScene(sceneDesc);
+    // 可选但推荐
+    sceneDesc.flags |= PxSceneFlag::eENABLE_ACTIVE_ACTORS;
+
+    PxScene* scene = physics->createScene(sceneDesc);
 
     PxRigidDynamic* actor =
         physics->createRigidDynamic(PxTransform(player.position));
@@ -30,7 +42,6 @@ void MoveSystem::Init(Player& player)
     scene->addActor(*actor);
 
     player.actor = actor;
-
 
     PxShape* shape = physics->createShape(
         PxCapsuleGeometry(player.radius, player.halfHeight),
@@ -140,6 +151,7 @@ bool MoveSystem::LoadNavMeshFile(const char* filename)
     {
         dtFreeNavMesh(navMesh);
         navMesh = nullptr;
+        std::cout << "LoadNavMeshFile fail" << std::endl;
         return false;
     }
 
